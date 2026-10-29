@@ -100,7 +100,7 @@ No hay cookies propias ni formularios que envíen datos al servidor.
 
 | Proyecto | Estado | En el sitio | Falta |
 | --- | --- | --- | --- |
-| Bogado Servicios Integrales | Real, publicado: https://bogadoservicios.com.ar | Tarjeta "Trabajo real · Sitio institucional · Publicado" con "Ver sitio" | Captura del sitio publicado: escritorio 1440 × 900 (16:10) y teléfono 390 × 780 (9:18), en WebP o AVIF. Desde este entorno no se pudo abrir el dominio (bloqueado por la red de la sesión) |
+| Bogado Servicios Integrales | Real, publicado: https://bogadoservicios.com.ar (limpieza y mantenimiento integral en Paraná) | Tarjeta "Trabajo real · Sitio institucional · Publicado" con capturas reales y "Ver sitio" | — Capturas tomadas del sitio publicado el 29/10/2026 (`site/assets/img/portfolio/bogado-*.webp`, 1440 × 900 y 390 × 780). Rehacerlas si el sitio cambia |
 | Cimbra Constructora | Real, en desarrollo (etapa avanzada) | Tarjeta "Trabajo real · Sitio · En desarrollo", sin enlace | URL de previsualización o capturas, y autorización del cliente para mostrarlo antes de publicarse. Cuando se publique: cambiar el rótulo a "Publicado" y agregar "Ver sitio" |
 | Obra Sur, Fermento, Estudio Norte, Nodo, Kiosko Verde, Sofía R. | Conceptos ficticios | Fermento, Nodo y Kiosko Verde en el portfolio; los seis en la demo de rubros | Se reemplazan cuando haya trabajos reales del mismo tipo |
 

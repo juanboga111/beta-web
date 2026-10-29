@@ -251,16 +251,20 @@ h1, h2, h3, p { margin: 0; }
 .pc-t span { font-size: 14px; font-weight: 600; color: var(--c-on-dark-3); }
 .pc p { font-size: 16px; line-height: 1.5; color: var(--c-on-dark); max-width: 52ch; }
 .pc-real .pc-desk { width: 88%; }
-/* Trabajos reales sin captura todavía: se muestra el dominio y el estado, no un diseño inventado del cliente. */
+/* Trabajos reales: navegador con el dominio real. */
 .pc-site { --bg: var(--c-light); --fg: var(--c-ink); }
 .pc-site .bar { background: var(--c-gray); }
 .pc-site .url { height: 20px; display: flex; align-items: center; padding: 0 12px; border-radius: var(--r-pill); background: var(--c-white); color: var(--c-text-3); font-size: 13px; font-weight: 500; }
 .pc-desk .pc-state { position: absolute; left: 7%; bottom: 22%; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: var(--r-pill); font-size: 14px; font-weight: 600; }
 .pc-desk .pc-state::before { content: ""; width: 8px; height: 8px; border-radius: 50%; }
-.pc-site .pc-state { background: var(--c-ink); color: var(--c-white); }
-.pc-site .pc-state::before { background: var(--c-ok-2); }
-.pc-site .ttl { margin-top: 10%; max-width: 16ch; font-size: clamp(24px, 3vw, 44px); font-family: var(--f-display); font-weight: 600; letter-spacing: -.04em; }
 /* En desarrollo: la capa "Estructura" del despiece, sin inventar el diseño del cliente. */
+/* Capturas reales (sitio publicado): navegador y teléfono con la imagen, sin pseudo-contenido. */
+.pc-shot img { display: block; width: 100%; height: auto; }
+.pc-desk.pc-shot { width: 74%; }
+.pc-phone.pc-shot { background: var(--c-white); }
+.pc-phone.pc-shot::before, .pc-phone.pc-shot::after { content: none; }
+.pc-phone.pc-shot img { height: 100%; object-fit: cover; object-position: top; }
+@media (hover: hover) and (pointer: fine) { .pc-real:hover .pc-desk.pc-shot { transform: translateY(-10px); } .pc-real:hover .pc-phone.pc-shot { transform: translateY(-22px); } }
 .pc-wire { --bg: var(--c-stage); --fg: var(--c-on-dark-2); box-shadow: inset 0 0 0 1.5px rgba(96, 165, 250, .85); }
 .pc-wire .bar { box-shadow: inset 0 -1.5px 0 rgba(96, 165, 250, .5); }
 .pc-wire i { position: absolute; border: 1.5px dashed rgba(96, 165, 250, .75); border-radius: 4px; }

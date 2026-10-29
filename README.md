@@ -39,6 +39,14 @@ npm run contact
 
 Eso copia los datos al footer, al respaldo sin JavaScript y a los datos estructurados. `npm test` falla si el HTML quedó desactualizado. El primer número de WhatsApp recibe la consulta; el resto se lista en el footer. Cuando cambie el usuario de Instagram por el de la marca nueva, alcanza con cambiar la URL (el sitio muestra "Instagram", no el usuario).
 
+## Preview en Vercel
+
+`vercel.json` publica `site/` sin build, con los mismos headers que `netlify.toml` (`npm test` verifica que coincidan).
+
+1. vercel.com/new → **Import Git Repository** → `juanboga111/beta-web`. Framework Preset: **Other**; no tocar Build ni Output.
+2. Cada push a una rama distinta de `main` genera una URL de preview (Vercel la comenta en el pull request). Las previews llevan `X-Robots-Tag: noindex`.
+3. Producción (rama `main` y dominio) queda para cuando se apruebe el PR.
+
 ## Publicar en Netlify
 
 1. Netlify → **Add new site → Import an existing project → GitHub** → `beta-web`.

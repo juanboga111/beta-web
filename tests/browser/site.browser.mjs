@@ -178,6 +178,10 @@ test('proyectos: filtros, trabajos reales, conceptos rotulados y enlaces', async
   await page.keyboard.press('Tab'); // con teclado: el primer foco de la grilla es "Ver sitio"
   assert.equal(await page.evaluate(() => document.activeElement.classList.contains('pc-link')), true);
   assert.equal(await page.evaluate(() => getComputedStyle(document.activeElement).outlineStyle), 'solid', 'foco visible');
+  // Capturas reales del sitio publicado: cargan con medidas reservadas.
+  await bogado.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => [...document.querySelectorAll('.pc-bogado img')].every((i) => i.complete && i.naturalWidth > 0));
+  assert.deepEqual(await bogado.locator('img').evaluateAll((is) => is.map((i) => [i.getAttribute('width'), i.getAttribute('height'), i.alt])), [['1200', '750', ''], ['360', '720', '']]);
   // Cimbra: real, en desarrollo, sin enlace externo ni rótulo de publicado.
   const cimbra = page.locator('[data-grid] .pc-cimbra');
   assert.equal(await cimbra.locator('.pc-t span').textContent(), 'Trabajo real · Sitio · En desarrollo');
@@ -195,8 +199,10 @@ for (const width of [1440, 768, 390]) {
       const box = c.getBoundingClientRect();
       const inside = [...c.querySelectorAll('.pc-t, p, .pc-link')].every((n) => { const b = n.getBoundingClientRect(); return b.left >= box.left - 1 && b.right <= box.right + 1; });
       const mock = c.querySelector('.pc-m').getBoundingClientRect();
-      const st = c.querySelector('.pc-state').getBoundingClientRect();
-      const ttl = c.querySelector('.ttl, .bar span').getBoundingClientRect();
+      const state = c.querySelector('.pc-state');
+      if (!state) return { inside, stateInMock: true, noOverlap: true }; // tarjeta con captura real
+      const st = state.getBoundingClientRect();
+      const ttl = c.querySelector('.bar span').getBoundingClientRect();
       const noOverlap = st.top >= ttl.bottom || st.bottom <= ttl.top || st.left >= ttl.right || st.right <= ttl.left;
       return { inside, stateInMock: st.top >= mock.top && st.bottom <= mock.bottom && st.right <= mock.right, noOverlap };
     }));
