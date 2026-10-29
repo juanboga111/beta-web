@@ -1,7 +1,10 @@
-// Pruebas de interacción en un navegador real (Chromium vía Playwright), contra el sitio servido con los
-// headers de producción (scripts/serve.mjs). No son parte de `npm test` porque necesitan Playwright y Chromium.
+// Pruebas de interacción en un navegador real (Chromium vía Playwright). Por defecto corren contra el sitio
+// servido en local con los headers de producción (scripts/serve.mjs). No son parte de `npm test` porque
+// necesitan Playwright y Chromium.
 //   npm run test:browser
+//   BASE_URL=https://<preview>.vercel.app VERCEL_SHARE=<token> npm run test:browser   (preview protegida)
 // Variables: PLAYWRIGHT_CHROMIUM (ruta del ejecutable, opcional), SHOTS=carpeta para guardar capturas.
+// VERCEL_SHARE es el valor de ?_vercel_share= del link "Share" de Vercel: no se guarda en el repo.
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -11,27 +14,39 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
+const REMOTE = process.env.BASE_URL ? process.env.BASE_URL.replace(/\/?$/, '/') : '';
 const PORT = 4400 + Math.floor(Math.random() * 400);
-const BASE = `http://localhost:${PORT}/`;
+const BASE = REMOTE || `http://localhost:${PORT}/`;
 const SHOTS = process.env.SHOTS;
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 
-let server; let browser;
+let server; let browser; let cookies = [];
 before(async () => {
-  server = spawn(process.execPath, [fileURLToPath(new URL('../../scripts/serve.mjs', import.meta.url)), String(PORT)], { stdio: 'pipe' });
-  await new Promise((ok, fail) => { server.stdout.once('data', ok); server.once('exit', fail); });
+  if (!REMOTE) {
+    server = spawn(process.execPath, [fileURLToPath(new URL('../../scripts/serve.mjs', import.meta.url)), String(PORT)], { stdio: 'pipe' });
+    await new Promise((ok, fail) => { server.stdout.once('data', ok); server.once('exit', fail); });
+  }
   browser = await chromium.launch(process.env.PLAYWRIGHT_CHROMIUM ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM } : {});
+  if (REMOTE && process.env.VERCEL_SHARE) {
+    // El link de compartir deja una cookie que habilita la preview; se reutiliza en cada contexto.
+    const ctx = await browser.newContext();
+    await (await ctx.newPage()).goto(`${BASE}?_vercel_share=${encodeURIComponent(process.env.VERCEL_SHARE)}`);
+    cookies = await ctx.cookies();
+    await ctx.close();
+  }
 });
 after(async () => { await browser?.close(); server?.kill(); });
 
 /** Abre la página y junta errores de consola, de página y violaciones de CSP. */
 async function open(opts = {}, path = '') {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, ...opts });
+  if (cookies.length) await ctx.addCookies(cookies);
   const page = await ctx.newPage();
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto(BASE + path, { waitUntil: 'load' });
+  const res = await page.goto(BASE + path, { waitUntil: 'load' });
+  assert.equal(res.status(), 200, `la página responde 200 (${page.url()})`);
   return { ctx, page, errors };
 }
 const pressed = (loc) => loc.getAttribute('aria-pressed');

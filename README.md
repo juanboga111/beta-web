@@ -46,6 +46,7 @@ Eso copia los datos al footer, al respaldo sin JavaScript y a los datos estructu
 1. vercel.com/new → **Import Git Repository** → `juanboga111/beta-web`. Framework Preset: **Other**; no tocar Build ni Output.
 2. Cada push a una rama distinta de `main` genera una URL de preview (Vercel la comenta en el pull request). Las previews llevan `X-Robots-Tag: noindex`.
 3. Producción (rama `main` y dominio) queda para cuando se apruebe el PR.
+4. Para probar una preview protegida: `BASE_URL=<url> VERCEL_SHARE=<token del link Share> npm run test:browser`.
 
 ## Publicar en Netlify
 

@@ -1,4 +1,39 @@
-# Verificación — 29/10/2026 (tercera pasada: portfolio real y presupuesto)
+# Verificación — 29/10/2026 (cuarta pasada: preview en Vercel)
+
+## Preview desplegada y verificada
+
+- **URL:** https://beta-web-git-sitio-beta-v1-byd-9174d1b6.vercel.app (alias de la rama `sitio-beta-v1`; se actualiza con cada push).
+- **Proyecto:** Vercel `byd-9174d1b6/beta-web`, conectado por la integración de GitHub. Cada push a `sitio-beta-v1` crea un deployment de preview y Vercel lo comenta en el PR #1. `main` y el dominio `beta.ar` no se tocaron.
+- **Protección:** las previews tienen Vercel Authentication (piden login de Vercel) y `X-Robots-Tag: noindex`. Para verificar desde afuera se usó un link "Share" de Vercel; el token no se guarda en el repo.
+- **Deployment verificado:** commit `7b437b9`, estado *success* en GitHub para el proyecto `beta-web`.
+
+| Prueba sobre la preview | Resultado |
+| --- | --- |
+| `BASE_URL=<preview> VERCEL_SHARE=<token> npm run test:browser` (las mismas 22 pruebas, contra Vercel) | **22/22 OK** |
+| Página, CSS, JS, fuentes, capturas de Bogado, robots y sitemap responden 200 con su tipo correcto; `/no-existe` responde 404 con la página propia | OK |
+| Headers en Vercel: CSP, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, COOP; HSTS de Vercel | OK |
+| Caché: fuentes `max-age=31536000, immutable`; `/assets/` 7 días; HTML `max-age=0, must-revalidate` | OK |
+| Sin errores de consola ni violaciones de CSP, sin scroll horizontal a 1440, 1280, 768 y 390 px | OK |
+| Despiece, inclinación, rubros, servicios, filtros, proceso, comparación, consulta completa, copiado, enlace `wa.me/5493434286906`, menú de teléfono, teclado, sin JavaScript y movimiento reducido | OK (incluido en las 22) |
+| Captura de página completa a 1440, 1280, 768 y 390 px revisada a ojo | Todas las secciones presentes, fieles a la dirección B |
+
+## Última ejecución registrada
+
+| Suite | Resultado |
+| --- | --- |
+| `npm test` (unitarias, HTML sincronizado con config.js, paridad de headers Vercel/Netlify) | **18/18 OK** |
+| `npm run test:browser` en local (headers de producción) | **22/22 OK** |
+| `npm run test:browser` contra la preview de Vercel | **22/22 OK** |
+
+### Cambios de esta pasada
+
+- **Bogado**: el dominio ya es accesible desde la sesión. Capturas reales del sitio publicado (escritorio 1440 × 900 y teléfono 390 × 780, WebP, con medidas reservadas y carga diferida) en la tarjeta del portfolio. Descripción con lo verificado en el sitio: limpieza y mantenimiento integral en Paraná, pedido de presupuesto y WhatsApp.
+- **`vercel.json`**: publica `site/` sin build ni instalación, con los headers de `netlify.toml`. En Vercel gana la última regla que coincide, así que la de fuentes inmutables va después de `/assets/`; verificado en la preview.
+- **Pruebas de navegador** ejecutables contra una URL remota (`BASE_URL`, `VERCEL_SHARE`); cada página debe responder 200.
+
+---
+
+# Tercera pasada — 29/10/2026 (portfolio real y presupuesto)
 
 ## Última ejecución registrada
 
@@ -23,7 +58,7 @@ La segunda pasada había registrado 14 unitarias y 18 de navegador. Se agregaron
 
 ### No se pudo verificar
 
-- **bogadoservicios.com.ar no se pudo abrir desde este entorno**: la política de red de la sesión bloquea el dominio (403 en el proxy; WebFetch tampoco resuelve). No se inspeccionó el sitio publicado ni se generó captura. Por eso la descripción de la tarjeta solo dice lo confirmado por beta (sitio institucional de servicios empresariales, desarrollado y publicado por beta).
+- (Resuelto en la cuarta pasada.) **bogadoservicios.com.ar no se pudo abrir desde este entorno**: la política de red de la sesión bloquea el dominio (403 en el proxy; WebFetch tampoco resuelve). No se inspeccionó el sitio publicado ni se generó captura. Por eso la descripción de la tarjeta solo dice lo confirmado por beta (sitio institucional de servicios empresariales, desarrollado y publicado por beta).
 - **Cimbra**: no hay URL de previsualización ni material visual en el repositorio.
 
 ---
@@ -124,5 +159,6 @@ npm run serve          # http://localhost:4321 con los headers de producción
 - **Lighthouse / PageSpeed, Core Web Vitals reales y securityheaders.com** sobre la URL publicada.
 - **Lector de pantalla real** (VoiceOver o NVDA).
 - Confirmar en un teléfono que `wa.me/5493434286906` abre el chat correcto de beta (el enlace se armó con el formato de celular argentino 54 + 9 + característica + número).
-- Capturas reales del portfolio (ver `docs/proyecto.md`, "Portfolio"): Bogado (escritorio 16:10 y teléfono 9:18, del sitio publicado) y Cimbra (cuando el cliente autorice mostrarlo).
+- Capturas de Cimbra, cuando haya previsualización y el cliente autorice mostrarlo (las de Bogado ya están).
+- Hay dos proyectos de Vercel conectados al repo (`beta-web` y `beta-web-wd1e`): borrar el duplicado.
 - Rangos de presupuesto: definirlos y cargarlos en `BUDGET_RANGES`.
