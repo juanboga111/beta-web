@@ -412,9 +412,10 @@ test('enlaces internos: cada ancla existe y el 404 responde', async () => {
   const { ctx, page } = await open();
   const hrefs = await page.locator('a[href^="#"]').evaluateAll((as) => [...new Set(as.map((a) => a.getAttribute('href')))]);
   for (const h of hrefs) assert.equal(await page.locator(h).count(), 1, h);
-  const res = await page.request.get(BASE + 'no-existe');
-  assert.equal(res.status(), 404);
-  for (const f of ['robots.txt', 'sitemap.xml', 'site.webmanifest', 'favicon.svg', 'og-image.png']) assert.equal((await page.request.get(BASE + f)).status(), 200, f);
-  assert.ok((await page.request.get(BASE)).headers()['content-security-policy'].includes("script-src 'self'"));
+  // Se pide desde el navegador (mismo origen y mismas cookies que un visitante).
+  const get = (path) => page.evaluate(async (u) => { const r = await fetch(u, { cache: 'no-store' }); return { status: r.status, csp: r.headers.get('content-security-policy') || '' }; }, path);
+  assert.equal((await get('/no-existe')).status, 404);
+  for (const f of ['robots.txt', 'sitemap.xml', 'site.webmanifest', 'favicon.svg', 'og-image.png']) assert.equal((await get('/' + f)).status, 200, f);
+  assert.ok((await get('/')).csp.includes("script-src 'self'"));
   await ctx.close();
 });

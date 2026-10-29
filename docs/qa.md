@@ -30,6 +30,7 @@
 - **Bogado**: el dominio ya es accesible desde la sesión. Capturas reales del sitio publicado (escritorio 1440 × 900 y teléfono 390 × 780, WebP, con medidas reservadas y carga diferida) en la tarjeta del portfolio. Descripción con lo verificado en el sitio: limpieza y mantenimiento integral en Paraná, pedido de presupuesto y WhatsApp.
 - **`vercel.json`**: publica `site/` sin build ni instalación, con los headers de `netlify.toml`. En Vercel gana la última regla que coincide, así que la de fuentes inmutables va después de `/assets/`; verificado en la preview.
 - **Pruebas de navegador** ejecutables contra una URL remota (`BASE_URL`, `VERCEL_SHARE`); cada página debe responder 200.
+- En una segunda corrida contra la preview, la prueba de enlaces falló por `ENOTFOUND`: el cliente HTTP de Playwright (fuera del navegador) no siempre resuelve DNS en este entorno. curl confirmó 404/200 en la preview. La prueba ahora pide los recursos con `fetch` desde la página, como un visitante.
 
 ---
 
