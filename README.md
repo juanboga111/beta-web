@@ -11,11 +11,12 @@ site/                 Lo que se publica (HTML, CSS y JS sin build)
   index.html          Página completa; se lee entera sin JavaScript
   404.html
   assets/css/         tokens.css (sistema de diseño) y styles.css
-  assets/js/          Un módulo por interacción; config.js tiene los datos de contacto
+  assets/js/          Un módulo por interacción; config.js tiene los datos de contacto (único lugar)
   assets/fonts/       Inter (OFL 1.1) recortada a latín
   robots.txt · sitemap.xml · site.webmanifest · íconos · og-image.png
-tests/                Pruebas de las funciones de WhatsApp y consulta
-scripts/              build-assets.py (fuentes, logo provisorio, íconos, OG)
+tests/                Pruebas unitarias (npm test) y de navegador (tests/browser, npm run test:browser)
+scripts/              serve.mjs (servidor local con los headers de producción), contact.mjs
+                      (copia config.js al HTML), build-assets.py (fuentes, logo provisorio, íconos, OG)
 docs/                 handoff-beta.md (diseño), proyecto.md (decisiones), qa.md (verificación)
 netlify.toml          Headers de seguridad, caché y redirección de www
 ```
@@ -23,9 +24,20 @@ netlify.toml          Headers de seguridad, caché y redirección de www
 ## Trabajar en local
 
 ```
-npm test        # pruebas (sin dependencias)
-npm run serve   # http://localhost:4321
+npm test              # pruebas unitarias y HTML sincronizado con config.js (sin dependencias)
+npm run serve         # http://localhost:4321, con la CSP y los headers de netlify.toml
+npm run test:browser  # pruebas de interacción en Chromium (necesita Playwright)
 ```
+
+## Datos de contacto
+
+Se cargan **solo** en `site/assets/js/config.js` (WhatsApp, correo, Instagram). Después de cambiarlos:
+
+```
+npm run contact
+```
+
+Eso copia los datos al footer, al respaldo sin JavaScript y a los datos estructurados. `npm test` falla si el HTML quedó desactualizado. El primer número de WhatsApp recibe la consulta; el resto se lista en el footer. Cuando cambie el usuario de Instagram por el de la marca nueva, alcanza con cambiar la URL (el sitio muestra "Instagram", no el usuario).
 
 ## Publicar en Netlify
 
@@ -35,7 +47,7 @@ npm run serve   # http://localhost:4321
 
 ## Antes de publicar (datos pendientes)
 
-- Número de WhatsApp y correo en `site/assets/js/config.js`, y en el footer de `site/index.html` ([EMAIL], [WHATSAPP]).
+- WhatsApp (5493434286906 y 5493434661332), correo e Instagram: **cargados**. Confirmar en un teléfono que el enlace abre el chat correcto. Actualizar la URL de Instagram cuando cambie el usuario.
 - Rangos de presupuesto en `site/assets/js/data.js` ([RANGO 1], [RANGO 2], [RANGO 3]).
 - Isotipo y logotipo oficiales en vector (hoy son una recreación; ver `scripts/build-assets.py`).
 - Confirmar el dominio, la consultoría como servicio y "Comunicación directa".

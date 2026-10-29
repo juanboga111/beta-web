@@ -19,13 +19,14 @@
   --c-white: #FFFFFF;
   --c-blue: #2563EB;        /* acción principal */
   --c-blue-dark: #1D4ED8;
+  --c-blue-3: #3B82F6;       /* contenido de la escena separada: legible sobre claro y oscuro */
   --c-blue-tint: #EFF4FF;
   --c-gray: #E5E7EB;
   --c-line: #E2E8F0;
   --c-text-2: #475569;
   --c-text-3: #334155;
   --c-text-4: #64748B;
-  --c-text-off: #7C8BA1;      /* era #94A3B8: no llegaba a 3:1 en texto grande */
+  --c-text-off: #64748B;      /* era #94A3B8 (2,6:1); #64748B da 4,76:1 sobre blanco y 4,55:1 sobre #F8FAFC */
   --c-on-dark: #A9B6D3;
   --c-on-dark-2: #C7D7FE;
   --c-on-dark-3: #93B4FF;

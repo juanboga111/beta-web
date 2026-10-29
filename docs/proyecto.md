@@ -15,7 +15,8 @@ Lo que no se sabe figura como **pendiente**; no se inventó nada.
 - **Contenido disponible:** textos del diseño aprobado. Fotos y portfolio reales: **pendientes**.
 - **Imágenes que existen de verdad:** ninguna todavía. Todas las maquetas están dibujadas con código.
 - **Identidad visual:** isotipo de dos piezas (negro y azul), #2563EB, #0F172A, #E5E7EB, #F8FAFC, Inter.
-- **Integraciones:** WhatsApp por enlace `wa.me` (sin API). Número **pendiente**.
+- **Integraciones:** WhatsApp por enlace `wa.me` (sin API) al 343 428-6906 (`5493434286906`); el 343 466-1332 figura en el footer.
+- **Contacto:** betadesarrolloweb@gmail.com · Instagram https://www.instagram.com/bydesarrollo/ (el usuario va a cambiar al de la marca nueva).
 - **Presupuesto o restricciones técnicas:** ninguno informado. Se eligió una arquitectura sin costos fijos.
 - **Dominio y hosting actuales:** el diseño menciona `beta.ar`; **pendiente de confirmar** que esté registrado. Hosting propuesto: Netlify.
 - **Nivel esperado:** producción real.

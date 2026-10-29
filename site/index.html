@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/styles.css">
 <script type="module" src="/assets/js/main.js"></script>
+<!-- contact:jsonld -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,9 +39,15 @@
   "description": "Estudio de diseño y desarrollo web a medida para empresas, comercios y marcas.",
   "slogan": "Ideas que funcionan en el mundo real.",
   "areaServed": "AR",
-  "knowsLanguage": "es"
+  "knowsLanguage": "es",
+  "email": "betadesarrolloweb@gmail.com",
+  "telephone": "+5493434286906",
+  "sameAs": [
+    "https://www.instagram.com/bydesarrollo/"
+  ]
 }
 </script>
+<!-- /contact:jsonld -->
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -52,7 +59,7 @@
 
 <header class="hd" data-header>
   <div class="hd-bar">
-    <a class="logo" href="#inicio" aria-label="beta, ir al inicio">
+    <a class="logo" href="#inicio" aria-label="beta, ir al inicio" translate="no">
       <svg class="iso" viewBox="0 0 270 170" aria-hidden="true"><polygon class="p1 p-dark" points="95,0 195,0 100,130 0,130"/><polygon class="p2 p-blue" points="180,40 270,40 175,170 80,170"/></svg>
       <svg class="wm" viewBox="40 40 1850 760" aria-hidden="true"><use href="#wm"/></svg>
     </a>
@@ -103,7 +110,7 @@
       <div class="glow"></div>
       <div class="scene">
         <div class="tilt" data-tilt>
-          <div class="iso3d" data-layers>
+          <div class="iso3d ex" data-layers>
             <div class="ly ly0 i0">
               <div class="o a-nav"></div><div class="o a-txt"></div><div class="o a-img"></div><div class="o a-btn"></div>
               <div class="o a-b1"></div><div class="o a-b2"></div><div class="o a-b3"></div>
@@ -131,10 +138,11 @@
           </div>
         </div>
       </div>
+      <ol class="legend" aria-hidden="true"><li>Interacción</li><li>Contenido</li><li>Diseño</li><li>Estructura</li></ol>
     </div>
     <div class="marks">
       <span class="pl" aria-hidden="true">+</span>
-      <span>Así está hecha una web: pasá el cursor por la escena.</span>
+      <span><span class="hint-pointer">Así está hecha una web: pasá el cursor por la escena.</span><span class="hint-touch">Así está hecha una web: tocá «Ver por capas» para separarla.</span></span>
       <button type="button" class="btn btn-dark js-only" aria-pressed="false" data-pin>Ver por capas</button>
       <span class="pl" aria-hidden="true">+</span>
     </div>
@@ -226,27 +234,27 @@
     </div>
     <div class="grid all" data-grid>
       <a class="pc pc-c1 w7" href="#consulta" data-kind="sitio" aria-label="Obra Sur, proyecto conceptual de sitio para una constructora">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Obra Sur</span><i>Cotizar</i></div><h4>Naves industriales llave en mano.</h4><div class="blk"></div></div><div class="pc-phone"></div></div>
+        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Obra Sur</span><i>Cotizar</i></div><p class="ttl">Naves industriales llave en mano.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
         <div class="pc-t"><h3>Obra Sur</h3><span>Concepto · Sitio</span></div>
         <p>Constructora: obras como protagonistas y cotización en dos pasos.</p>
       </a>
       <a class="pc pc-c2 w5" href="#consulta" data-kind="tienda" aria-label="Fermento, proyecto conceptual de tienda para una panadería">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Fermento</span><i>Pedir</i></div><h4>Pan de masa madre, cada mañana.</h4><div class="blk"></div></div><div class="pc-phone"></div></div>
+        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Fermento</span><i>Pedir</i></div><p class="ttl">Pan de masa madre, cada mañana.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
         <div class="pc-t"><h3>Fermento</h3><span>Concepto · Tienda</span></div>
         <p>Panadería: carta con precios y pedidos por WhatsApp.</p>
       </a>
       <a class="pc pc-c3 w5" href="#consulta" data-kind="sitio" aria-label="Estudio Norte, proyecto conceptual de sitio para un estudio contable">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Estudio Norte</span><i>Turno</i></div><h4>Contadores para pymes.</h4><div class="blk"></div></div><div class="pc-phone"></div></div>
+        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Estudio Norte</span><i>Turno</i></div><p class="ttl">Contadores para pymes.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
         <div class="pc-t"><h3>Estudio Norte</h3><span>Concepto · Sitio</span></div>
         <p>Estudio contable: servicios claros y turnos online.</p>
       </a>
       <a class="pc pc-c4 w7" href="#consulta" data-kind="landing" aria-label="Nodo, proyecto conceptual de landing para una app de facturación">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Nodo</span><i>Probar</i></div><h4>Facturá desde el celular.</h4><div class="blk"></div></div><div class="pc-phone"></div></div>
+        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Nodo</span><i>Probar</i></div><p class="ttl">Facturá desde el celular.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
         <div class="pc-t"><h3>Nodo</h3><span>Concepto · Landing</span></div>
         <p>App de facturación: una página, una acción, registro directo.</p>
       </a>
       <a class="pc pc-c5 w12" href="#consulta" data-kind="tienda" aria-label="Kiosko Verde, proyecto conceptual de tienda para un vivero">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Kiosko Verde</span><i>Comprar</i></div><h4>Plantas con envío en el día.</h4><div class="blk"></div></div><div class="pc-phone"></div></div>
+        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Kiosko Verde</span><i>Comprar</i></div><p class="ttl">Plantas con envío en el día.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
         <div class="pc-t"><h3>Kiosko Verde</h3><span>Concepto · Tienda</span></div>
         <p>Vivero online: catálogo filtrable y checkout simple.</p>
       </a>
@@ -356,8 +364,10 @@
     </div>
     <div class="card" data-consult>
       <div class="card-nojs nojs-only">
+        <!-- contact:nojs-wa (lo completa `npm run contact` con el número de config.js) -->
         <p>Escribinos por WhatsApp contándonos qué necesitás, si partís de cero o ya tenés web y qué querés lograr.</p>
-        <a class="btn btn-pri btn-big" href="https://wa.me/?text=Hola%20beta%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener noreferrer" data-wa-default>Escribinos por WhatsApp</a>
+        <a class="btn btn-pri btn-big" href="https://wa.me/5493434286906?text=Hola%20beta%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener noreferrer" data-wa-default>Escribinos por WhatsApp</a>
+        <!-- /contact:nojs-wa -->
       </div>
       <div class="js-only" data-consult-ui>
         <div class="card-top">
@@ -391,7 +401,7 @@
     </div>
     <footer class="ft">
       <div class="ft-col ft-brand">
-        <span class="logo"><svg class="iso" viewBox="0 0 270 170" aria-hidden="true"><use href="#iso"/></svg><svg class="wm" viewBox="40 40 1850 760" role="img" aria-label="beta"><use href="#wm"/></svg></span>
+        <span class="logo" translate="no"><svg class="iso" viewBox="0 0 270 170" aria-hidden="true"><use href="#iso"/></svg><svg class="wm" viewBox="40 40 1850 760" role="img" aria-label="beta"><use href="#wm"/></svg></span>
         <span>Ideas que funcionan en el mundo real.</span>
       </div>
       <nav class="ft-col" aria-label="Pie de página">
@@ -399,8 +409,10 @@
       </nav>
       <div class="ft-col">
         <span class="ft-h">Contacto</span>
-        <span data-contact="email">[EMAIL]</span>
-        <span data-contact="whatsapp">[WHATSAPP]</span>
+        <!-- contact:email --><a href="mailto:betadesarrolloweb@gmail.com">betadesarrolloweb@gmail.com</a><!-- /contact:email -->
+        <!-- contact:whatsapp --><a href="https://wa.me/5493434286906?text=Hola%20beta%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp +54 9 343 428-6906">+54 9 343 428-6906</a>
+        <a href="https://wa.me/5493434661332?text=Hola%20beta%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp +54 9 343 466-1332">+54 9 343 466-1332</a><!-- /contact:whatsapp -->
+        <!-- contact:instagram --><a href="https://www.instagram.com/bydesarrollo/" target="_blank" rel="noopener noreferrer">Instagram</a><!-- /contact:instagram -->
         <span>beta.ar</span>
       </div>
       <span class="ft-copy">© 2026 beta</span>

@@ -13,21 +13,21 @@ export function initHeroLayers() {
   let hovering = false;
 
   const setExploded = (on) => layers.classList.toggle('ex', on);
+  const setPinned = (on) => {
+    pinned = on;
+    if (pin) {
+      pin.setAttribute('aria-pressed', String(on));
+      pin.textContent = on ? 'Armar de nuevo' : 'Ver por capas';
+    }
+    setExploded(pinned || hovering);
+  };
 
-  // Secuencia de carga: llega separada y se arma sola a los 1,9 s.
-  if (!reduce) {
-    setExploded(true);
-    setTimeout(() => { if (!hovering && !pinned) setExploded(false); }, 1900);
-  }
+  // El HTML llega separado (estado sin JavaScript). Con movimiento normal se arma solo a los 1,9 s;
+  // con movimiento reducido queda separado y fijado, sin cambios que el visitante no pidió.
+  if (reduce) setPinned(true);
+  else setTimeout(() => { if (!hovering && !pinned) setExploded(false); }, 1900);
 
-  if (pin) {
-    pin.addEventListener('click', () => {
-      pinned = !pinned;
-      pin.setAttribute('aria-pressed', String(pinned));
-      pin.textContent = pinned ? 'Armar de nuevo' : 'Ver por capas';
-      setExploded(pinned || hovering);
-    });
-  }
+  if (pin) pin.addEventListener('click', () => setPinned(!pinned));
 
   // Luz de la grilla siguiendo el cursor (también con mouse en movimiento reducido: no desplaza nada).
   let target = null;

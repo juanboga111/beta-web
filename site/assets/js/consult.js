@@ -1,6 +1,6 @@
 // Consulta en cuatro pasos con resumen y apertura de WhatsApp. No envía nada por su cuenta.
 import { QUESTIONS } from './data.js';
-import { SITE } from './config.js';
+import { SITE, primaryWhatsApp } from './config.js';
 import { buildConsultSummary, buildWhatsAppUrl } from './whatsapp.js';
 import { reducedMotion } from './motion.js';
 
@@ -92,25 +92,39 @@ export function initConsult() {
       list.append(li);
     });
     const honest = el('p', 'honest', 'Todavía no se envió nada: el resumen se abre en WhatsApp para que lo mandes vos.');
-    const wa = el('a', 'btn btn-pri btn-big', 'Continuar por WhatsApp');
-    wa.href = buildWhatsAppUrl(SITE.whatsapp, text);
-    wa.target = '_blank';
-    wa.rel = 'noopener noreferrer';
+    const waUrl = buildWhatsAppUrl(primaryWhatsApp(SITE), text);
     const status = el('p', 'status');
     status.setAttribute('role', 'status');
-    const copy = button('btn btn-ghost btn-big', 'Copiar resumen', async () => {
+    const manual = el('p', 'manual', text);
+    const copy = button(`btn ${waUrl ? 'btn-ghost' : 'btn-pri'} btn-big`, 'Copiar resumen', async () => {
       clearTimeout(copyTimer);
       try {
+        if (!navigator.clipboard || !window.isSecureContext) throw new Error('Portapapeles no disponible');
         await navigator.clipboard.writeText(text);
         copy.textContent = 'Copiado';
         status.textContent = 'Resumen copiado al portapapeles.';
         copyTimer = setTimeout(() => { copy.textContent = 'Copiar resumen'; status.textContent = ''; }, 1600);
       } catch {
-        status.textContent = 'No se pudo copiar. Podés seguir con el botón de WhatsApp.';
+        copy.textContent = 'Copiar resumen';
+        status.textContent = 'No se pudo copiar automáticamente. Seleccioná este texto y copialo a mano:';
+        if (!manual.isConnected) status.after(manual);
       }
     });
+    const actions = [copy];
+    if (waUrl) {
+      const wa = el('a', 'btn btn-pri btn-big', 'Continuar por WhatsApp');
+      wa.href = waUrl;
+      wa.target = '_blank';
+      wa.rel = 'noopener noreferrer';
+      wa.setAttribute('aria-describedby', 'cons-honest');
+      actions.unshift(wa);
+    } else {
+      // Sin número configurado no hay enlace: el visitante copia el resumen.
+      honest.textContent = 'Todavía no se envió nada. Copiá el resumen para mandárnoslo cuando quieras.';
+    }
+    honest.id = 'cons-honest';
     const nav = el('div', 'cnav start');
-    nav.append(wa, copy);
+    nav.append(...actions);
     body.append(title, list, honest, nav, status);
     if (focus) title.focus({ preventScroll: true });
   }
@@ -127,17 +141,16 @@ export function initConsult() {
   render(false);
 }
 
-/** Enlaces "Escribinos por WhatsApp": solo apuntan a WhatsApp cuando el número está configurado. */
+/**
+ * Botones "Escribinos por WhatsApp" del cierre: con número configurado abren WhatsApp;
+ * sin número siguen llevando a la consulta. Footer y respaldo sin JavaScript los escribe `npm run contact`.
+ */
 export function initWhatsAppLinks() {
-  const text = 'Hola beta, quiero hacer una consulta.';
-  if (SITE.whatsapp) {
-    document.querySelectorAll('[data-wa-link]').forEach((a) => {
-      a.href = buildWhatsAppUrl(SITE.whatsapp, text);
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-    });
-  }
-  document.querySelectorAll('[data-wa-default]').forEach((a) => { a.href = buildWhatsAppUrl(SITE.whatsapp, text); });
-  if (SITE.email) document.querySelectorAll('[data-contact="email"]').forEach((n) => { n.textContent = SITE.email; });
-  if (SITE.whatsapp) document.querySelectorAll('[data-contact="whatsapp"]').forEach((n) => { n.textContent = `+${SITE.whatsapp}`; });
+  const url = buildWhatsAppUrl(primaryWhatsApp(SITE), 'Hola beta, quiero hacer una consulta.');
+  if (!url) return;
+  document.querySelectorAll('[data-wa-link]').forEach((a) => {
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  });
 }
