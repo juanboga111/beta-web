@@ -5,7 +5,7 @@
 - **URL:** https://beta-web-git-sitio-beta-v1-byd-9174d1b6.vercel.app (alias de la rama `sitio-beta-v1`; se actualiza con cada push).
 - **Proyecto:** Vercel `byd-9174d1b6/beta-web`, conectado por la integración de GitHub. Cada push a `sitio-beta-v1` crea un deployment de preview y Vercel lo comenta en el PR #1. `main` y el dominio `beta.ar` no se tocaron.
 - **Protección:** las previews tienen Vercel Authentication (piden login de Vercel) y `X-Robots-Tag: noindex`. Para verificar desde afuera se usó un link "Share" de Vercel; el token no se guarda en el repo.
-- **Deployment verificado:** commit `7b437b9`, estado *success* en GitHub para el proyecto `beta-web`.
+- **Deployments verificados:** `7b437b9` y `7d03ce6` (estado *success* en GitHub para `beta-web`). Sobre `7d03ce6`: 22/22 pruebas de navegador y HTML servido idéntico a `site/index.html`. Vercel agrega en las previews su script de comentarios (`vercel.live`); en Chromium no aparece ni genera errores, y en producción no se agrega. Los commits posteriores solo cambian documentación.
 
 | Prueba sobre la preview | Resultado |
 | --- | --- |
