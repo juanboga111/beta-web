@@ -407,7 +407,7 @@ Ninguno de estos datos se inventó: en el diseño figuran como marcadores entre 
 - [x] Perfiles sociales: Instagram (https://www.instagram.com/bydesarrollo/), en el footer como "Instagram". El usuario va a cambiar al de la marca nueva.
 - [ ] Confirmar que el cliente habla directamente con quienes diseñan y programan (beneficio "Comunicación directa").
 - [ ] Confirmar que beta ofrece consultoría y estrategia digital (sexto servicio).
-- [ ] Portfolio real y futuros casos de éxito, con autorización de cada cliente.
+- [ ] Portfolio real y futuros casos de éxito, con autorización de cada cliente. En curso: Bogado Servicios Integrales (publicado) y Cimbra Constructora (en desarrollo) ya están en el portfolio; faltan sus capturas.
 - [ ] Isotipo y logotipo oficiales en vector.
 - [ ] Dominio definitivo. El diseño menciona beta.ar.
 

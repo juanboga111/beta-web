@@ -224,7 +224,7 @@
   <div class="in">
     <div class="sec-head">
       <h2 id="pr-t" class="h2">Proyectos</h2>
-      <p class="lead">Conceptos visuales de beta que muestran cómo pensamos cada rubro. Los trabajos reales se suman acá cuando estén publicados.</p>
+      <p class="lead">Trabajos reales de beta y conceptos que muestran cómo pensamos cada rubro. Cada tarjeta indica si es un sitio publicado, uno en desarrollo o un concepto.</p>
     </div>
     <div class="chips js-only" role="group" aria-label="Tipo de proyecto" data-filters>
       <button type="button" class="chip" aria-pressed="true" data-f="todos">Todos</button>
@@ -233,20 +233,25 @@
       <button type="button" class="chip" aria-pressed="false" data-f="landing">Landings</button>
     </div>
     <div class="grid all" data-grid>
-      <a class="pc pc-c1 w7" href="#consulta" data-kind="sitio" aria-label="Obra Sur, proyecto conceptual de sitio para una constructora">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Obra Sur</span><i>Cotizar</i></div><p class="ttl">Naves industriales llave en mano.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
-        <div class="pc-t"><h3>Obra Sur</h3><span>Concepto · Sitio</span></div>
-        <p>Constructora: obras como protagonistas y cotización en dos pasos.</p>
-      </a>
+      <article class="pc pc-real pc-bogado w7" data-kind="sitio" aria-labelledby="pc-bogado">
+        <div class="pc-m" aria-hidden="true">
+          <div class="pc-desk pc-site"><div class="bar"><span class="url">bogadoservicios.com.ar</span></div><p class="ttl">Bogado Servicios Integrales</p><span class="pc-state">Sitio publicado</span></div>
+        </div>
+        <div class="pc-t"><h3 id="pc-bogado">Bogado Servicios Integrales</h3><span>Trabajo real · Sitio institucional · Publicado</span></div>
+        <p>Sitio institucional de servicios empresariales, diseñado, desarrollado y publicado por beta.</p>
+        <a class="pc-link" href="https://bogadoservicios.com.ar" target="_blank" rel="noopener noreferrer">Ver sitio<span class="sr-only"> de Bogado Servicios Integrales (se abre en una pestaña nueva)</span></a>
+      </article>
+      <article class="pc pc-real pc-cimbra w5" data-kind="sitio" aria-labelledby="pc-cimbra">
+        <div class="pc-m" aria-hidden="true">
+          <div class="pc-desk pc-wire"><div class="bar"><span>Cimbra Constructora</span></div><i class="w1"></i><i class="w2"></i><i class="w3"></i><i class="w4"></i><span class="pc-state">En desarrollo</span></div>
+        </div>
+        <div class="pc-t"><h3 id="pc-cimbra">Cimbra Constructora</h3><span>Trabajo real · Sitio · En desarrollo</span></div>
+        <p>Sitio de una constructora, en etapa avanzada de desarrollo. Todavía no está publicado.</p>
+      </article>
       <a class="pc pc-c2 w5" href="#consulta" data-kind="tienda" aria-label="Fermento, proyecto conceptual de tienda para una panadería">
         <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Fermento</span><i>Pedir</i></div><p class="ttl">Pan de masa madre, cada mañana.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
         <div class="pc-t"><h3>Fermento</h3><span>Concepto · Tienda</span></div>
         <p>Panadería: carta con precios y pedidos por WhatsApp.</p>
-      </a>
-      <a class="pc pc-c3 w5" href="#consulta" data-kind="sitio" aria-label="Estudio Norte, proyecto conceptual de sitio para un estudio contable">
-        <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Estudio Norte</span><i>Turno</i></div><p class="ttl">Contadores para pymes.</p><div class="blk"></div></div><div class="pc-phone"></div></div>
-        <div class="pc-t"><h3>Estudio Norte</h3><span>Concepto · Sitio</span></div>
-        <p>Estudio contable: servicios claros y turnos online.</p>
       </a>
       <a class="pc pc-c4 w7" href="#consulta" data-kind="landing" aria-label="Nodo, proyecto conceptual de landing para una app de facturación">
         <div class="pc-m" aria-hidden="true"><div class="pc-desk"><div class="bar"><span>Nodo</span><i>Probar</i></div><p class="ttl">Facturá desde el celular.</p><div class="blk"></div></div><div class="pc-phone"></div></div>

@@ -48,10 +48,10 @@ Eso copia los datos al footer, al respaldo sin JavaScript y a los datos estructu
 ## Antes de publicar (datos pendientes)
 
 - WhatsApp (5493434286906 y 5493434661332), correo e Instagram: **cargados**. Confirmar en un teléfono que el enlace abre el chat correcto. Actualizar la URL de Instagram cuando cambie el usuario.
-- Rangos de presupuesto en `site/assets/js/data.js` ([RANGO 1], [RANGO 2], [RANGO 3]).
+- Rangos de presupuesto: pendientes de definir. Se cargan en `BUDGET_RANGES` (`site/assets/js/data.js`); mientras esté vacío el paso ofrece "Prefiero hablarlo" o "Saltar".
 - Isotipo y logotipo oficiales en vector (hoy son una recreación; ver `scripts/build-assets.py`).
 - Confirmar el dominio, la consultoría como servicio y "Comunicación directa".
 - Data Fiscal de ARCA en el footer.
-- Reemplazar los proyectos conceptuales (Obra Sur, Fermento, Estudio Norte, Nodo, Kiosko Verde) por trabajos reales; hasta entonces conservan el rótulo "Concepto".
+- Portfolio: Bogado Servicios Integrales (publicado) y Cimbra Constructora (en desarrollo) ya figuran como trabajos reales; faltan sus capturas. Fermento, Nodo y Kiosko Verde siguen como conceptos rotulados hasta tener trabajos reales que los reemplacen.
 
 Detalle completo en `docs/handoff-beta.md` (sección 7) y `docs/proyecto.md`.

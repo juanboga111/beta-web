@@ -12,7 +12,9 @@ Lo que no se sabe figura como **pendiente**; no se inventó nada.
 - **Países y mercados:** Argentina (contenido en español rioplatense).
 - **Modelo de negocio:** B2B / B2C, venta de proyectos web (leads).
 - **Funciones necesarias:** las de `docs/handoff-beta.md` (secciones 2 y 3). Sin login, sin pagos, sin panel.
-- **Contenido disponible:** textos del diseño aprobado. Fotos y portfolio reales: **pendientes**.
+- **Contenido disponible:** textos del diseño aprobado. Fotos: **pendientes**.
+- **Portfolio real:** Bogado Servicios Integrales (publicado, https://bogadoservicios.com.ar) y Cimbra Constructora (en desarrollo, sin URL pública). Ver "Portfolio" abajo.
+- **Presupuesto:** los rangos del paso 4 de la consulta están **pendientes de definir**.
 - **Imágenes que existen de verdad:** ninguna todavía. Todas las maquetas están dibujadas con código.
 - **Identidad visual:** isotipo de dos piezas (negro y azul), #2563EB, #0F172A, #E5E7EB, #F8FAFC, Inter.
 - **Integraciones:** WhatsApp por enlace `wa.me` (sin API) al 343 428-6906 (`5493434286906`); el 343 466-1332 figura en el footer.
@@ -91,3 +93,17 @@ No hay cookies propias ni formularios que envíen datos al servidor.
 - `main` = producción (Netlify publica cada push). Cambios en ramas con pull request; Netlify genera una vista previa por PR.
 - Rollback: en Netlify → Deploys → publicar un deploy anterior.
 - Pruebas: `npm test` (sin dependencias, usa `node --test`).
+
+---
+
+## Portfolio
+
+| Proyecto | Estado | En el sitio | Falta |
+| --- | --- | --- | --- |
+| Bogado Servicios Integrales | Real, publicado: https://bogadoservicios.com.ar | Tarjeta "Trabajo real · Sitio institucional · Publicado" con "Ver sitio" | Captura del sitio publicado: escritorio 1440 × 900 (16:10) y teléfono 390 × 780 (9:18), en WebP o AVIF. Desde este entorno no se pudo abrir el dominio (bloqueado por la red de la sesión) |
+| Cimbra Constructora | Real, en desarrollo (etapa avanzada) | Tarjeta "Trabajo real · Sitio · En desarrollo", sin enlace | URL de previsualización o capturas, y autorización del cliente para mostrarlo antes de publicarse. Cuando se publique: cambiar el rótulo a "Publicado" y agregar "Ver sitio" |
+| Obra Sur, Fermento, Estudio Norte, Nodo, Kiosko Verde, Sofía R. | Conceptos ficticios | Fermento, Nodo y Kiosko Verde en el portfolio; los seis en la demo de rubros | Se reemplazan cuando haya trabajos reales del mismo tipo |
+
+**Cómo sumar una captura:** guardarla en `site/assets/img/portfolio/` y reemplazar dentro de la tarjeta el `div.pc-desk` de la maqueta por `<img src="…" width="…" height="…" alt="" loading="lazy" decoding="async">` (la maqueta es decorativa, `aria-hidden`; el nombre y el rótulo ya describen la tarjeta).
+
+**Presupuesto:** cargar los rangos confirmados en `BUDGET_RANGES` (`site/assets/js/data.js`). Se suman después de "Prefiero hablarlo", aparecen tal cual en el resumen y en el mensaje de WhatsApp, y el paso sigue siendo opcional.

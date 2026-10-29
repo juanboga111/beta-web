@@ -154,7 +154,7 @@ test('servicios: una vista previa por vez y textos del servicio elegido', async 
   await ctx.close();
 });
 
-test('proyectos: filtros, rótulo de concepto y enlaces', async () => {
+test('proyectos: filtros, trabajos reales, conceptos rotulados y enlaces', async () => {
   const { ctx, page } = await open();
   const visible = () => page.locator('[data-grid] .pc:visible').count();
   assert.equal(await visible(), 5);
@@ -162,8 +162,59 @@ test('proyectos: filtros, rótulo de concepto y enlaces', async () => {
     await page.locator(`[data-f="${f}"]`).click();
     assert.equal(await visible(), n, f);
   }
-  for (const label of await page.locator('[data-grid] .pc-t span').allTextContents()) assert.match(label, /^Concepto · /);
-  assert.equal(await page.locator('[data-grid] .pc:not([href="#consulta"])').count(), 0);
+  // Conceptos: siguen rotulados y llevan a la consulta.
+  const concepts = page.locator('[data-grid] a.pc');
+  assert.equal(await concepts.count(), 3);
+  for (const label of await concepts.locator('.pc-t span').allTextContents()) assert.match(label, /^Concepto · /);
+  assert.equal(await page.locator('[data-grid] a.pc:not([href="#consulta"])').count(), 0);
+  // Bogado: trabajo real publicado con "Ver sitio" en pestaña nueva.
+  const bogado = page.locator('[data-grid] .pc-bogado');
+  assert.equal(await bogado.locator('.pc-t span').textContent(), 'Trabajo real · Sitio institucional · Publicado');
+  const ver = bogado.getByRole('link', { name: /^Ver sitio/ });
+  assert.equal(await ver.getAttribute('href'), 'https://bogadoservicios.com.ar');
+  assert.equal(await ver.getAttribute('target'), '_blank');
+  assert.equal(await ver.getAttribute('rel'), 'noopener noreferrer');
+  await page.locator('[data-f="landing"]').focus();
+  await page.keyboard.press('Tab'); // con teclado: el primer foco de la grilla es "Ver sitio"
+  assert.equal(await page.evaluate(() => document.activeElement.classList.contains('pc-link')), true);
+  assert.equal(await page.evaluate(() => getComputedStyle(document.activeElement).outlineStyle), 'solid', 'foco visible');
+  // Cimbra: real, en desarrollo, sin enlace externo ni rótulo de publicado.
+  const cimbra = page.locator('[data-grid] .pc-cimbra');
+  assert.equal(await cimbra.locator('.pc-t span').textContent(), 'Trabajo real · Sitio · En desarrollo');
+  assert.equal(await cimbra.locator('a').count(), 0);
+  assert.doesNotMatch(await cimbra.textContent(), /Sitio publicado|Ver sitio/);
+  // Ningún trabajo real queda rotulado como concepto.
+  for (const t of await page.locator('[data-grid] .pc-real .pc-t span').allTextContents()) assert.doesNotMatch(t, /Concepto/);
+  await ctx.close();
+});
+
+for (const width of [1440, 768, 390]) {
+  test(`${width}px: tarjetas reales del portfolio sin cortes ni superposiciones`, async () => {
+    const { ctx, page } = await open({ viewport: { width, height: 900 }, hasTouch: width < 700, isMobile: width < 700 });
+    const r = await page.evaluate(() => [...document.querySelectorAll('.pc-real')].map((c) => {
+      const box = c.getBoundingClientRect();
+      const inside = [...c.querySelectorAll('.pc-t, p, .pc-link')].every((n) => { const b = n.getBoundingClientRect(); return b.left >= box.left - 1 && b.right <= box.right + 1; });
+      const mock = c.querySelector('.pc-m').getBoundingClientRect();
+      const st = c.querySelector('.pc-state').getBoundingClientRect();
+      const ttl = c.querySelector('.ttl, .bar span').getBoundingClientRect();
+      const noOverlap = st.top >= ttl.bottom || st.bottom <= ttl.top || st.left >= ttl.right || st.right <= ttl.left;
+      return { inside, stateInMock: st.top >= mock.top && st.bottom <= mock.bottom && st.right <= mock.right, noOverlap };
+    }));
+    for (const x of r) assert.deepEqual(x, { inside: true, stateInMock: true, noOverlap: true });
+    if (process.env.SHOTS) await page.locator('[data-grid]').screenshot({ path: `${process.env.SHOTS}/${width}-portfolio.png` });
+    await ctx.close();
+  });
+}
+
+test('consulta: presupuesto sin rangos confirmados ofrece "Prefiero hablarlo" o saltar', async () => {
+  const { ctx, page } = await open();
+  const card = page.locator('[data-consult-ui]');
+  for (const o of ['Landing page', 'Empiezo de cero', 'Más consultas']) { await card.getByRole('button', { name: o }).click(); await page.waitForTimeout(400); }
+  assert.equal(await page.locator('[data-c-lbl]').textContent(), 'Paso 4 de 4');
+  assert.deepEqual(await card.locator('.opt').allTextContents(), ['Prefiero hablarlo']);
+  assert.equal(await card.locator('text=/\\[RANGO/').count(), 0);
+  await card.getByRole('button', { name: 'Saltar' }).click();
+  assert.equal(await card.locator('.sum .v').last().textContent(), 'Sin indicar');
   await ctx.close();
 });
 

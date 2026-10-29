@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildWhatsAppUrl, buildConsultSummary, normalizePhone, isValidWhatsAppNumber } from '../site/assets/js/whatsapp.js';
-import { QUESTIONS } from '../site/assets/js/data.js';
+import { QUESTIONS, BUDGET_RANGES, budgetOptions } from '../site/assets/js/data.js';
 
 // Número de prueba controlado: no es el de beta (que sigue pendiente en config.js).
 const TEST_NUMBER = '+54 9 11 0000-0000';
@@ -53,4 +53,18 @@ test('buildConsultSummary con las cuatro respuestas', () => {
 test('las preguntas son cuatro y solo el presupuesto es opcional', () => {
   assert.equal(QUESTIONS.length, 4);
   assert.deepEqual(QUESTIONS.filter((q) => q.optional).map((q) => q.key), ['pres']);
+});
+
+test('presupuesto: sin rangos confirmados solo ofrece "Prefiero hablarlo" y no muestra marcadores', () => {
+  const pres = QUESTIONS.find((q) => q.key === 'pres');
+  assert.deepEqual(BUDGET_RANGES, [], 'los rangos siguen pendientes');
+  assert.deepEqual(pres.opts, ['Prefiero hablarlo']);
+  assert.ok(!pres.opts.some((o) => o.includes('[')));
+});
+
+test('presupuesto: con rangos cargados se suman como opciones y llegan al resumen', () => {
+  const opts = budgetOptions(['Rango A', ' Rango B ', '']);
+  assert.deepEqual(opts, ['Prefiero hablarlo', 'Rango A', 'Rango B']);
+  const qs = QUESTIONS.map((q) => (q.key === 'pres' ? { ...q, opts } : q));
+  assert.match(buildConsultSummary(qs, { tipo: 'Landing page', pres: 'Rango B' }), /Presupuesto: Rango B\.$/);
 });

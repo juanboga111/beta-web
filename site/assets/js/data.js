@@ -100,10 +100,21 @@ export const SERVICES = {
 
 export const STEPS_LABEL = (i) => `Etapa ${i + 1} de 4`;
 
+// Rangos de presupuesto: PENDIENTES de definir por beta (handoff, sección 7). No inventar valores.
+// Cuando estén confirmados, cargarlos acá como texto que se ve tal cual en el botón y en el resumen,
+// por ejemplo: ['Hasta $X', 'Entre $X y $Y', 'Más de $Y']. Mientras esté vacío, el paso ofrece
+// "Prefiero hablarlo" y "Saltar".
+export const BUDGET_RANGES = [];
+
+/** Opciones del paso de presupuesto a partir de los rangos confirmados. */
+export function budgetOptions(ranges = BUDGET_RANGES) {
+  return ['Prefiero hablarlo', ...ranges.map((r) => String(r).trim()).filter(Boolean)];
+}
+
 export const QUESTIONS = [
   { key: 'tipo', q: '¿Qué necesitás?', short: 'Proyecto', opts: ['Sitio institucional', 'Tienda online', 'Landing page', 'Todavía no sé'] },
   { key: 'inicio', q: '¿Partís de cero o ya tenés web?', short: 'Punto de partida', opts: ['Empiezo de cero', 'Quiero renovar mi web'] },
   { key: 'obj', q: '¿Qué tiene que lograr?', short: 'Objetivo', opts: ['Más consultas', 'Vender online', 'Mejorar mi imagen', 'Ordenar mi presencia digital'] },
-  // Rangos PENDIENTES de confirmar por beta (handoff, sección 7).
-  { key: 'pres', q: '¿Tenés un presupuesto pensado?', short: 'Presupuesto', opts: ['Prefiero hablarlo', '[RANGO 1]', '[RANGO 2]', '[RANGO 3]'], optional: true },
+  // Paso opcional: "Prefiero hablarlo" más los rangos de BUDGET_RANGES. Se puede saltar.
+  { key: 'pres', q: '¿Tenés un presupuesto pensado?', short: 'Presupuesto', opts: budgetOptions(), optional: true },
 ];

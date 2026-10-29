@@ -1,4 +1,34 @@
-# Verificación — 29/10/2026 (segunda pasada)
+# Verificación — 29/10/2026 (tercera pasada: portfolio real y presupuesto)
+
+## Última ejecución registrada
+
+| Suite | Resultado |
+| --- | --- |
+| `npm test` (unitarias + HTML sincronizado con config.js) | **16/16 OK** |
+| `npm run test:browser` (Chromium headless, headers de producción) | **22/22 OK** |
+
+La segunda pasada había registrado 14 unitarias y 18 de navegador. Se agregaron 2 unitarias (rangos de presupuesto) y 4 de navegador (portfolio real a 1440, 768 y 390 px, y paso de presupuesto).
+
+### Cambios de esta pasada
+
+| Cambio | Verificación |
+| --- | --- |
+| **Bogado Servicios Integrales** pasa al portfolio como trabajo real publicado: rótulo "Trabajo real · Sitio institucional · Publicado" y botón "Ver sitio" a https://bogadoservicios.com.ar (`target="_blank"`, `rel="noopener noreferrer"`, aviso de pestaña nueva para lectores de pantalla) | Prueba de navegador: rótulo, `href`, `target`, `rel`, foco visible con Tab |
+| **Cimbra Constructora** pasa al portfolio como trabajo real **en desarrollo**: rótulo "Trabajo real · Sitio · En desarrollo", sin enlace y sin decir que está publicado | Prueba de navegador: sin enlaces, sin "Sitio publicado" ni "Ver sitio" |
+| Las dos tarjetas reales reemplazan en el portfolio a los conceptos de su mismo rubro (Obra Sur → Cimbra, Estudio Norte → Bogado). Obra Sur y Estudio Norte siguen en la demo de rubros, rotulados como conceptos. Fermento, Nodo y Kiosko Verde siguen como conceptos. Se conserva la grilla 7+5 / 5+7 / 12 y los filtros (Sitios 2, Tiendas 2, Landings 1) | Prueba de filtros y rótulos |
+| Sin captura de los sitios reales, la maqueta no inventa su diseño: Bogado muestra el dominio y "Sitio publicado"; Cimbra, la capa "Estructura" del despiece y "En desarrollo" | Capturas a 1440, 768 y 390 px; sin cortes ni superposiciones (prueba de navegador) |
+| Paso de presupuesto: los botones «[RANGO 1]», «[RANGO 2]» y «[RANGO 3]» se mostraban al visitante. Ahora salen de `BUDGET_RANGES` en `site/assets/js/data.js` (vacío): el paso ofrece "Prefiero hablarlo" o "Saltar" | Unitaria y de navegador; resumen y WhatsApp sin cambios |
+| Regresión corregida: los títulos de las maquetas de proyectos (pasados de `h4` a `p` en la pasada anterior) heredaban el gris de `.pc p` | Captura del portfolio |
+| Correo `betadesarrolloweb@gmail.com` verificado en `config.js`, footer (`mailto:`) y datos estructurados | Unitaria de sincronización y de JSON-LD |
+
+### No se pudo verificar
+
+- **bogadoservicios.com.ar no se pudo abrir desde este entorno**: la política de red de la sesión bloquea el dominio (403 en el proxy; WebFetch tampoco resuelve). No se inspeccionó el sitio publicado ni se generó captura. Por eso la descripción de la tarjeta solo dice lo confirmado por beta (sitio institucional de servicios empresariales, desarrollado y publicado por beta).
+- **Cimbra**: no hay URL de previsualización ni material visual en el repositorio.
+
+---
+
+# Segunda pasada — 29/10/2026
 
 Todo lo que figura como comprobado se corrió en esta sesión en **Chromium 1243 headless (Playwright)**, contra el sitio servido con los headers de producción de `netlify.toml` (`npm run serve`, incluida la CSP). Lo que no se pudo correr está en "Pendiente". Los resultados de la primera pasada (6 unitarias y 23 de interacción) se tomaron como antecedente y se volvieron a probar.
 
@@ -94,3 +124,5 @@ npm run serve          # http://localhost:4321 con los headers de producción
 - **Lighthouse / PageSpeed, Core Web Vitals reales y securityheaders.com** sobre la URL publicada.
 - **Lector de pantalla real** (VoiceOver o NVDA).
 - Confirmar en un teléfono que `wa.me/5493434286906` abre el chat correcto de beta (el enlace se armó con el formato de celular argentino 54 + 9 + característica + número).
+- Capturas reales del portfolio (ver `docs/proyecto.md`, "Portfolio"): Bogado (escritorio 16:10 y teléfono 9:18, del sitio publicado) y Cimbra (cuando el cliente autorice mostrarlo).
+- Rangos de presupuesto: definirlos y cargarlos en `BUDGET_RANGES`.
