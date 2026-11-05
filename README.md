@@ -14,6 +14,7 @@ site/                 Lo que se publica (HTML, CSS y JS sin build)
   assets/js/          Un módulo por interacción; config.js tiene los datos de contacto (único lugar)
   assets/fonts/       Inter (OFL 1.1) recortada a latín
   robots.txt · sitemap.xml · site.webmanifest · íconos · og-image.png
+componentes/firma-beta/  Firma «Diseñado y desarrollado por beta» para los sitios de clientes (no se publica acá)
 tests/                Pruebas unitarias (npm test) y de navegador (tests/browser, npm run test:browser)
 scripts/              serve.mjs (servidor local con los headers de producción), contact.mjs
                       (copia config.js al HTML), build-assets.py (fuentes, logo provisorio, íconos, OG)
@@ -64,3 +65,7 @@ Eso copia los datos al footer, al respaldo sin JavaScript y a los datos estructu
 - Portfolio: Bogado Servicios Integrales (publicado) y Cimbra Constructora (en desarrollo) ya figuran como trabajos reales; faltan sus capturas. Fermento, Nodo y Kiosko Verde siguen como conceptos rotulados hasta tener trabajos reales que los reemplacen.
 
 Detalle completo en `docs/handoff-beta.md` (sección 7) y `docs/proyecto.md`.
+
+## Firma de beta para sitios de clientes
+
+`componentes/firma-beta/` tiene la firma reutilizable para el footer de cada proyecto: un fragmento HTML (`firma-beta.html`) y una hoja (`firma-beta.css`), sin dependencias, con el enlace al Instagram de beta ya configurado. Instrucciones, variantes y decisiones en `componentes/firma-beta/README.md`; para verla, abrir `componentes/firma-beta/demo.html`.

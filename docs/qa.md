@@ -1,3 +1,27 @@
+# Firma de beta para sitios de clientes — 05/11/2026
+
+Componente en `componentes/firma-beta/` (fuera de `site/`: no se publica en el sitio de beta). Detalle en su README.
+
+| Prueba | Resultado |
+| --- | --- |
+| `npm test` (incluye 4 de la firma: enlace, `target`/`rel`, sin estilos en línea ni scripts, copias idénticas al fragmento) | **22/22 OK** |
+| `npm run test:browser` (22 del sitio + 10 de la firma, Chromium) | **32/32 OK** |
+| Firma bajo CSP estricta, cinco footers de clientes ficticios a 1440, 1024, 768, 390 y 320 px: sin errores, desbordes ni superposiciones; proporciones de isotipo y logotipo | OK |
+| Clic en leyenda, isotipo y logotipo → Instagram en pestaña nueva, sin `opener`; Tab + Enter; foco visible | OK |
+| Hover: no toma `footer a:hover` del cliente; piezas del isotipo se separan; sin movimiento con movimiento reducido | OK |
+| Contraste AA de la leyenda y área táctil ≥ 44 px en los cinco footers | OK |
+| Detector de Impeccable | Solo marca el hover amarillo del cliente ficticio (agresivo a propósito) e Inter (tipografía de la marca) |
+
+Defectos encontrados y corregidos durante el desarrollo:
+- La regla `footer a:hover` del cliente le cambiaba el color y el fondo a la firma.
+- La pieza azul no contrastaba sobre un footer de color (1,7:1): se agregó `data-tema="mono"`.
+- La leyenda quedaba en 3,47:1 sobre ese mismo footer: en `mono` va al 100 %.
+- El área táctil del tamaño chico medía 42 px.
+
+Pendiente: probar en Safari y Firefox reales, en un teléfono y con un lector de pantalla. Reemplazar los vectores cuando exista el logo oficial.
+
+---
+
 # Verificación — 29/10/2026 (cuarta pasada: preview en Vercel)
 
 ## Preview desplegada y verificada

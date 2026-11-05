@@ -1,0 +1,17 @@
+/* Solo para comparar las alternativas A, B y C. La firma definitiva está en firma-beta.css. */
+body { margin: 0; padding: 40px; font-family: system-ui, sans-serif; background: #E5E7EB; color: #0F172A; }
+h1 { font-size: 22px; margin: 0 0 24px; } h2 { font-size: 15px; margin: 32px 0 12px; font-weight: 600; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.bg { border-radius: 12px; padding: 48px 32px; } .claro { background: #FFFFFF; color: #1F2937; } .oscuro { background: #111827; color: #E5E7EB; }
+.cli { display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 14px; }
+.fx { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font: 500 12px/1 Inter, system-ui, sans-serif; letter-spacing: .01em; }
+.fx svg { display: block; fill: currentColor; }
+.fx-ley { opacity: .68; white-space: nowrap; }
+.fx-wm { height: 13px; width: auto; }
+.fx-iso { height: 13px; width: auto; }
+.fx-p2 { fill: #2563EB; }
+.fx-marca { display: inline-flex; align-items: center; gap: 6px; }
+.fx-a .fx-wm { height: 15px; }
+.fx-c { display: inline-grid; grid-template-columns: auto auto; column-gap: 12px; row-gap: 4px; align-items: center; }
+.fx-c .fx-ley { grid-column: 1; } .fx-c .fx-linea { grid-row: 1 / span 2; grid-column: 2; width: 1px; height: 26px; background: currentColor; opacity: .25; }
+.fx-c .fx-marca { grid-column: 3; grid-row: 1; } .fx-c .fx-sub { grid-column: 3; grid-row: 2; font-size: 10px; opacity: .5; letter-spacing: .08em; }
