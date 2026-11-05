@@ -1,0 +1,71 @@
+/* Tokens de diseño de beta — dirección B (Laboratorio).
+   Fuente: docs/handoff-beta.md, sección 4. Ningún componente usa valores sueltos. */
+
+@font-face { font-family: "Inter"; src: url("../fonts/inter-400.woff") format("woff"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-500.woff") format("woff"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-600.woff") format("woff"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-700.woff") format("woff"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter Display"; src: url("../fonts/inter-display-600.woff") format("woff"); font-weight: 600; font-style: normal; font-display: swap; }
+
+:root {
+  /* Color */
+  --c-deep: #0B1020;        /* hero, cierre, footer */
+  --c-stage: #070B16;       /* escenas 3D y vistas previas */
+  --c-ink: #0F172A;         /* tinta y superficie oscura */
+  --c-ink-2: #1E293B;       /* superficie oscura secundaria */
+  --c-ink-3: #16213A;
+  --c-window: #EEF1F6;      /* ventana del hero */
+  --c-light: #F8FAFC;
+  --c-white: #FFFFFF;
+  --c-blue: #2563EB;        /* acción principal */
+  --c-blue-dark: #1D4ED8;
+  --c-blue-3: #3B82F6;       /* contenido de la escena separada: legible sobre claro y oscuro */
+  --c-blue-tint: #EFF4FF;
+  --c-gray: #E5E7EB;
+  --c-line: #E2E8F0;
+  --c-text-2: #475569;
+  --c-text-3: #334155;
+  --c-text-4: #64748B;
+  --c-text-off: #64748B;      /* era #94A3B8 (2,6:1); #64748B da 4,76:1 sobre blanco y 4,55:1 sobre #F8FAFC */
+  --c-on-dark: #A9B6D3;
+  --c-on-dark-2: #C7D7FE;
+  --c-on-dark-3: #93B4FF;
+  --c-on-blue: #F1F5FF;       /* era #DBE6FF: no llegaba a 4.5:1 */
+  --c-ok: #16A34A;
+  --c-ok-2: #22C55E;
+
+  /* Tipografía */
+  --f-text: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-display: "Inter Display", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-h1: clamp(44px, 6.6vw, 100px);
+  --fs-h2: clamp(36px, 4.6vw, 68px);
+  --fs-h2-final: clamp(44px, 6.4vw, 96px);
+  --fs-lead: clamp(17px, 1.35vw, 19px);
+  --fs-body: 17px;
+  --fs-small: 15px;
+  --fs-label: 14px;
+
+  /* Espaciado y grilla */
+  --max: 1360px;
+  --gutter: clamp(16px, 3vw, 40px);
+  --sec-pad: clamp(96px, 11vw, 168px);
+  --col-gap: clamp(32px, 5vw, 80px);
+  --header-h: 76px;
+
+  /* Radios */
+  --r-xl: 20px;
+  --r-lg: 14px;
+  --r-md: 10px;
+  --r-pill: 999px;
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-inout: cubic-bezier(.77, 0, .175, 1);
+  --t-press: 160ms;
+  --t-fast: 200ms;
+  --t-ui: 260ms;
+  --t-3d: 950ms;
+
+  /* Forma del isotipo para marcas derivadas */
+  --iso-clip: polygon(36% 0, 100% 0, 64% 100%, 0 100%);
+}

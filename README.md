@@ -1,25 +1,71 @@
-# Web Lab
+# beta — sitio web
 
-Base para diseñar, construir y publicar sitios web de producción con Claude Code. Trae las skills de diseño oficiales, el prompt maestro de trabajo y los checklists, para que cada proyecto arranque con las mismas reglas.
+Sitio de **beta**, estudio de diseño y desarrollo web. Implementa la dirección creativa B, "Laboratorio": una web que se separa en sus cuatro capas para mostrar cómo se construye.
 
-## Qué incluye
+Creado a partir de la plantilla `web-lab`: las skills de diseño, el prompt maestro y los checklists siguen en `.claude/` y `docs/`.
 
-- **`CLAUDE.md`**: lo que Claude Code lee al empezar cada sesión. Carga el prompt maestro y explica qué skill usar en cada momento.
-- **`.claude/skills/`**: seis skills oficiales de diseño (Impeccable, Taste, Emil Kowalski, Frontend Design de Anthropic y las guías de Vercel). Detalle y versiones en `NOTICE.md`.
-- **`docs/`**: prompt maestro, arquitectura de referencia, checklist de producción, ficha de proyecto y guía para actualizar las skills.
-- **`scripts/update-skills.sh`**: trae las últimas versiones de las skills.
+## Estructura
 
-## Cómo usarlo
+```
+site/                 Lo que se publica (HTML, CSS y JS sin build)
+  index.html          Página completa; se lee entera sin JavaScript
+  404.html
+  assets/css/         tokens.css (sistema de diseño) y styles.css
+  assets/js/          Un módulo por interacción; config.js tiene los datos de contacto (único lugar)
+  assets/fonts/       Inter (OFL 1.1) recortada a latín
+  robots.txt · sitemap.xml · site.webmanifest · íconos · og-image.png
+componentes/firma-beta/  Firma «Diseñado y desarrollado por beta» para los sitios de clientes (no se publica acá)
+tests/                Pruebas unitarias (npm test) y de navegador (tests/browser, npm run test:browser)
+scripts/              serve.mjs (servidor local con los headers de producción), contact.mjs
+                      (copia config.js al HTML), build-assets.py (fuentes, logo provisorio, íconos, OG)
+docs/                 handoff-beta.md (diseño), proyecto.md (decisiones), qa.md (verificación)
+netlify.toml          Headers de seguridad, caché y redirección de www
+```
 
-**Proyecto nuevo:** en GitHub, en este repo, tocá **Use this template → Create a new repository**. El repo nuevo nace con todo. Después abrilo en Claude Code, copiá `docs/proyecto-plantilla.md` como `docs/proyecto.md` y completalo.
+## Trabajar en local
 
-**Proyecto existente:** copiá a ese repo la carpeta `.claude/skills/`, el `CLAUDE.md` y la carpeta `docs/`.
+```
+npm test              # pruebas unitarias y HTML sincronizado con config.js (sin dependencias)
+npm run serve         # http://localhost:4321, con la CSP y los headers de netlify.toml
+npm run test:browser  # pruebas de interacción en Chromium (necesita Playwright)
+```
 
-## Requisitos para que corran todas las skills
+## Datos de contacto
 
-- Node 22 o superior y Chrome o Chromium instalados (para el inspector de Taste).
-- Conexión a internet la primera vez (Impeccable descarga su programa; las guías de Vercel bajan sus reglas, con copia local de respaldo).
+Se cargan **solo** en `site/assets/js/config.js` (WhatsApp, correo, Instagram). Después de cambiarlos:
 
-## Seguridad
+```
+npm run contact
+```
 
-Nunca subas claves, tokens ni contraseñas. Usá variables de entorno (`.env`, que está en `.gitignore`).
+Eso copia los datos al footer, al respaldo sin JavaScript y a los datos estructurados. `npm test` falla si el HTML quedó desactualizado. El primer número de WhatsApp recibe la consulta; el resto se lista en el footer. Cuando cambie el usuario de Instagram por el de la marca nueva, alcanza con cambiar la URL (el sitio muestra "Instagram", no el usuario).
+
+## Preview en Vercel
+
+`vercel.json` publica `site/` sin build, con los mismos headers que `netlify.toml` (`npm test` verifica que coincidan).
+
+1. vercel.com/new → **Import Git Repository** → `juanboga111/beta-web`. Framework Preset: **Other**; no tocar Build ni Output.
+2. Cada push a una rama distinta de `main` genera una URL de preview (Vercel la comenta en el pull request). Las previews llevan `X-Robots-Tag: noindex`.
+3. Producción (rama `main` y dominio) queda para cuando se apruebe el PR.
+4. Para probar una preview protegida: `BASE_URL=<url> VERCEL_SHARE=<token del link Share> npm run test:browser`.
+
+## Publicar en Netlify
+
+1. Netlify → **Add new site → Import an existing project → GitHub** → `beta-web`.
+2. Build command: vacío. Publish directory: `site` (ya viene en `netlify.toml`).
+3. **Domain management**: agregar `beta.ar` y activar HTTPS.
+
+## Antes de publicar (datos pendientes)
+
+- WhatsApp (5493434286906 y 5493434661332), correo e Instagram: **cargados**. Confirmar en un teléfono que el enlace abre el chat correcto. Actualizar la URL de Instagram cuando cambie el usuario.
+- Rangos de presupuesto: pendientes de definir. Se cargan en `BUDGET_RANGES` (`site/assets/js/data.js`); mientras esté vacío el paso ofrece "Prefiero hablarlo" o "Saltar".
+- Isotipo y logotipo oficiales en vector (hoy son una recreación; ver `scripts/build-assets.py`).
+- Confirmar el dominio, la consultoría como servicio y "Comunicación directa".
+- Data Fiscal de ARCA en el footer.
+- Portfolio: Bogado Servicios Integrales (publicado) y Cimbra Constructora (en desarrollo) ya figuran como trabajos reales; faltan sus capturas. Fermento, Nodo y Kiosko Verde siguen como conceptos rotulados hasta tener trabajos reales que los reemplacen.
+
+Detalle completo en `docs/handoff-beta.md` (sección 7) y `docs/proyecto.md`.
+
+## Firma de beta para sitios de clientes
+
+`componentes/firma-beta/` tiene la firma reutilizable para el footer de cada proyecto: un fragmento HTML (`firma-beta.html`) y una hoja (`firma-beta.css`), sin dependencias, con el enlace al Instagram de beta ya configurado. Instrucciones, variantes y decisiones en `componentes/firma-beta/README.md`; para verla, abrir `componentes/firma-beta/demo.html`.

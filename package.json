@@ -1,0 +1,12 @@
+{
+  "name": "beta-web",
+  "private": true,
+  "description": "Sitio de beta: diseño y desarrollo web a medida (dirección B, Laboratorio).",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/contact.mjs --check && node --test \"tests/*.test.mjs\"",
+    "test:browser": "node --test --test-concurrency=1 \"tests/browser/*.browser.mjs\"",
+    "serve": "node scripts/serve.mjs",
+    "contact": "node scripts/contact.mjs"
+  }
+}

@@ -1,0 +1,21 @@
+/* Estilos de "clientes" ficticios para probar la firma. Incluye reglas agresivas a propósito
+   (subrayado, Georgia, mayúsculas, colores) para comprobar que la firma no las hereda. */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Georgia, serif; background: #F3F4F6; color: #111827; }
+.contenido { max-width: 1100px; margin: 0 auto; padding: 48px 24px 24px; }
+.contenido h1 { margin: 0 0 8px; font-size: 28px; } .contenido p { margin: 0 0 24px; color: #4B5563; }
+footer a { color: #DC2626; text-decoration: underline; text-transform: uppercase; letter-spacing: .2em; font-family: Georgia, serif; }
+footer a:hover { color: #7C3AED; background: #FEF08A; }
+.f { padding: 40px 24px 28px; }
+.f-in { max-width: 1100px; margin: 0 auto; }
+.f-cols { display: flex; flex-wrap: wrap; gap: 32px 64px; padding-bottom: 28px; border-bottom: 1px solid rgba(127, 127, 127, .25); }
+.f-cols h3 { margin: 0 0 10px; font-size: 15px; } .f-cols ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; }
+.f-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; padding-top: 20px; font: 14px/1.4 system-ui, sans-serif; }
+.f-claro { background: #FFFFFF; color: #1F2937; }
+.f-claro .f-cols a { color: #0E7490; }
+.f-oscuro { background: #0B1220; color: #CBD5E1; }
+.f-oscuro .f-cols a { color: #E2E8F0; }
+.f-color { background: #0E7490; color: #ECFEFF; }
+.f-color .f-cols a { color: #FFFFFF; }
+.f-centro .f-base { flex-direction: column; justify-content: center; }
+.etiqueta { max-width: 1100px; margin: 40px auto 8px; padding: 0 24px; font: 600 13px system-ui, sans-serif; color: #4B5563; }

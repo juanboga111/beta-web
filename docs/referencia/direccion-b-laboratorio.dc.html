@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>beta — Laboratorio digital</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&amp;family=Sora:wght@700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1020}
+*{box-sizing:border-box}
+::selection{background:#2563EB;color:#FFFFFF}
+.bl{container-type:inline-size;container-name:bl;font-family:Inter,system-ui,sans-serif;background:#0B1020;color:#0F172A;-webkit-font-smoothing:antialiased}
+.bl a{color:inherit}
+.bl a:focus-visible,.bl button:focus-visible{outline:3px solid #2563EB;outline-offset:3px}
+.bl-in{max-width:1360px;margin:0 auto;padding-left:clamp(16px,3vw,40px);padding-right:clamp(16px,3vw,40px)}
+
+/* Navegación */
+.bl-hd{position:sticky;top:0;z-index:50;padding:12px clamp(12px,2vw,24px) 0}
+.bl-bar{position:relative;max-width:1360px;margin:0 auto;height:64px;padding:0 10px 0 22px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-radius:999px;color:#F8FAFC;background:rgba(248,250,252,0);overflow:hidden;transition:background-color 300ms ease,color 300ms ease,box-shadow 300ms ease}
+.bl-hd.on .bl-bar,.bl-hd.open .bl-bar{background:#F8FAFC;color:#0F172A;box-shadow:0 16px 40px -16px rgba(2,6,23,.45)}
+.bl-prog{position:absolute;left:28px;right:28px;bottom:0;height:2px;background:#2563EB;transform-origin:left center;transform:scaleX(0)}
+.bl-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.bl-logo b{font-family:Sora,sans-serif;font-weight:700;font-size:28px;letter-spacing:-.05em;line-height:1}
+.bl-mk .p1{animation:bl-p1 800ms cubic-bezier(.23,1,.32,1) both}
+.bl-mk .p2{animation:bl-p2 800ms 160ms cubic-bezier(.23,1,.32,1) both}
+@keyframes bl-p1{from{transform:translate(-40px,0);opacity:0}}
+@keyframes bl-p2{from{transform:translate(40px,40px);opacity:0}}
+.bl-links{display:flex;align-items:center;gap:4px}
+.bl-lk{position:relative;font-size:15px;font-weight:500;text-decoration:none;padding:12px 14px;border-radius:999px;transition:background-color 180ms ease}
+@media (hover:hover) and (pointer:fine){.bl-lk:hover{background:rgba(148,163,184,.18)}}
+.bl-lk::after{content:"";position:absolute;left:50%;bottom:4px;width:14px;height:6px;margin-left:-7px;background:#2563EB;clip-path:polygon(36% 0,100% 0,64% 100%,0 100%);opacity:0;transform:translateY(3px);transition:opacity 200ms ease,transform 200ms cubic-bezier(.23,1,.32,1)}
+.bl-lk.act::after{opacity:1;transform:none}
+.bl-burger{display:none;width:48px;height:48px;border:0;border-radius:999px;background:transparent;color:inherit;cursor:pointer;align-items:center;justify-content:center}
+.bl-mnav{position:absolute;left:clamp(12px,2vw,24px);right:clamp(12px,2vw,24px);top:84px;background:#F8FAFC;border-radius:20px;padding:12px;display:flex;flex-direction:column;clip-path:inset(0 0 100% 0 round 20px);opacity:0;pointer-events:none;transition:clip-path 280ms cubic-bezier(.23,1,.32,1),opacity 200ms ease;box-shadow:0 24px 48px -20px rgba(2,6,23,.5)}
+.bl-hd.open .bl-mnav{clip-path:inset(0 0 0 0 round 20px);opacity:1;pointer-events:auto}
+.bl-mnav a{font-size:24px;font-weight:600;letter-spacing:-.02em;text-decoration:none;color:#0F172A;padding:14px 16px;border-radius:14px}
+
+/* Botones */
+.bl-pill{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font-family:inherit;font-size:15px;font-weight:600;line-height:1;text-decoration:none;border:0;cursor:pointer;white-space:nowrap;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 200ms ease,box-shadow 220ms ease,color 200ms ease}
+.bl-pill:active{transform:scale(.97)}
+.bl-pill.pri{background:#2563EB;color:#FFFFFF}
+.bl-pill.dark{background:#0F172A;color:#FFFFFF}
+.bl-pill.light{background:#F8FAFC;color:#0F172A}
+.bl-pill.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.bl-pill.big{min-height:56px;padding:0 28px;font-size:17px}
+.bl-pill[disabled]{opacity:.4;cursor:not-allowed;transform:none}
+@media (hover:hover) and (pointer:fine){.bl-pill.pri:not([disabled]):hover{box-shadow:0 0 0 6px rgba(37,99,235,.22),0 10px 30px -6px rgba(37,99,235,.7)}.bl-pill.dark:hover{background:#1E293B}.bl-pill.light:hover{background:#FFFFFF}}
+.bl-chip{font-family:inherit;font-size:15px;font-weight:600;min-height:44px;padding:0 18px;border-radius:999px;border:0;cursor:pointer;background:#E5E7EB;color:#0F172A;transition:background-color 200ms ease,color 200ms ease,transform 160ms cubic-bezier(.23,1,.32,1)}
+.bl-chip:active{transform:scale(.97)}
+.bl-chip.on{background:#0F172A;color:#FFFFFF}
+.bl-dark .bl-chip{background:#1E293B;color:#E2E8F0}
+.bl-dark .bl-chip.on{background:#F8FAFC;color:#0F172A}
+@media (hover:hover) and (pointer:fine){.bl-chip:not(.on):hover{background:#D7DCE4}.bl-dark .bl-chip:not(.on):hover{background:#27344D}}
+
+/* Hero */
+.bl-hero{position:relative;padding:0 clamp(12px,2vw,24px) clamp(96px,10vw,140px);overflow:hidden}
+.bl-bgp{position:absolute;pointer-events:none;will-change:transform}
+.bl-win{position:relative;z-index:1;max-width:1360px;margin:16px auto 0;background:#EEF1F6;border-radius:20px;padding:clamp(20px,3vw,40px)}
+.bl-top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:32px 56px;align-items:end}
+.bl-h1{margin:0;font-size:clamp(44px,6.6vw,100px);line-height:.94;font-weight:600;letter-spacing:-.05em;color:#0F172A}
+.bl-h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.bl-h1 .w > span{display:inline-block;animation:bl-rise 900ms cubic-bezier(.23,1,.32,1) both}
+@keyframes bl-rise{from{transform:translateY(105%)}}
+.bl-sub{margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.55;color:#334155;max-width:44ch;animation:bl-fade 700ms 500ms ease-out both}
+@keyframes bl-fade{from{opacity:0;transform:translateY(8px)}}
+.bl-ctas{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;animation:bl-fade 700ms 620ms ease-out both}
+.bl-stage{position:relative;margin-top:clamp(24px,3vw,40px);height:clamp(440px,44vw,620px);background:#070B16;border-radius:14px;overflow:hidden;perspective:1700px;touch-action:pan-y;cursor:default}
+.bl-stage::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.2) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(380px circle at var(--mx,50%) var(--my,55%),#000,transparent 72%);mask-image:radial-gradient(380px circle at var(--mx,50%) var(--my,55%),#000,transparent 72%);pointer-events:none}
+.bl-glow{position:absolute;left:50%;top:60%;width:70%;height:50%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(37,99,235,.38),rgba(37,99,235,0));pointer-events:none}
+.bl-scene{position:absolute;left:50%;top:50%;width:600px;height:380px;margin:-190px 0 0 -300px;transform-style:preserve-3d}
+.bl-tilt{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.bl-iso{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(55deg) rotateZ(-36deg);--gap:3px}
+.bl-iso.ex{--gap:80px}
+.bl-ly{position:absolute;inset:0;border-radius:10px;transform:translateZ(calc(var(--i) * var(--gap)));transition:transform 950ms cubic-bezier(.77,0,.175,1),background-color 400ms ease,box-shadow 400ms ease}
+.bl-ly .ab{position:absolute}
+.bl-l0{box-shadow:inset 0 0 0 1.5px rgba(96,165,250,.85)}
+.bl-l0 .o{border:1.5px dashed rgba(96,165,250,.75);border-radius:4px}
+.bl-l1{background:#F8FAFC;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.bl-l2,.bl-l3{background:rgba(148,163,184,0)}
+.ex .bl-l2,.ex .bl-l3{background:rgba(148,163,184,.07);box-shadow:inset 0 0 0 1px rgba(191,211,255,.28)}
+.bl-tag{position:absolute;left:100%;top:6px;margin-left:22px;display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:15px;font-weight:600;color:#C7D7FE;opacity:0;transform:translateX(-10px);transition:opacity 300ms ease,transform 300ms cubic-bezier(.23,1,.32,1)}
+.bl-tag::before{content:"";width:14px;height:8px;background:#2563EB;clip-path:polygon(36% 0,100% 0,64% 100%,0 100%)}
+.ex .bl-tag{opacity:1;transform:none;transition-delay:calc(var(--i) * 80ms + 350ms)}
+.bl-marks{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px;font-size:15px;color:#334155}
+.bl-marks .pl{font-size:20px;font-weight:300;color:#0F172A;line-height:1}
+
+/* Secciones */
+.bl-sec{padding:clamp(96px,11vw,168px) 0}
+.bl-h2{margin:0;font-size:clamp(36px,4.6vw,68px);line-height:1;font-weight:600;letter-spacing:-.045em}
+.bl-lead{margin:20px 0 0;font-size:clamp(17px,1.35vw,19px);line-height:1.55;color:#475569;max-width:52ch}
+.bl-dark{background:#0F172A;color:#F8FAFC}
+.bl-dark .bl-lead{color:#A9B6D3}
+
+/* Demo de rubros */
+.bl-demo{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;margin-top:40px;align-items:start}
+.bl-browser{border-radius:14px;overflow:hidden;background:#FFFFFF;box-shadow:0 30px 70px -30px rgba(15,23,42,.35)}
+.bl-chrome{height:44px;display:flex;align-items:center;gap:12px;padding:0 16px;background:#E5E7EB;font-size:14px;color:#334155}
+.bl-chrome .url{flex:1;max-width:420px;height:28px;border-radius:999px;background:#F8FAFC;display:flex;align-items:center;padding:0 14px}
+.bl-chrome .tag{font-size:13px;font-weight:600;color:#1D4ED8}
+.bl-mock{position:relative;aspect-ratio:16/9.4;overflow:hidden;background:var(--bg);color:var(--fg);transition:background-color 350ms ease,color 350ms ease}
+.bl-mock .m-nav{height:15%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 5%;font-size:clamp(13px,1.2vw,16px)}
+.bl-mock .m-nav b{font-weight:700;letter-spacing:-.02em}
+.bl-mock .m-links{display:flex;gap:22px;opacity:.75}
+.bl-mock .m-btn{background:var(--acc);color:var(--on);padding:8px 14px;border-radius:var(--r);font-weight:600;font-size:.85em;transition:background-color 350ms ease}
+.bl-mock .m-body{height:85%;padding:2% 5% 5%;display:grid;gap:4%;transition:filter 220ms ease,opacity 220ms ease,transform 220ms cubic-bezier(.23,1,.32,1)}
+.bl-mock.sw .m-body{filter:blur(6px);opacity:.25;transform:scale(.985)}
+.bl-mock .m-copy{grid-area:copy;display:flex;flex-direction:column;justify-content:center;gap:16px;min-width:0}
+.bl-mock .m-h{margin:0;font-size:clamp(22px,2.9vw,44px);line-height:1;font-weight:700;letter-spacing:-.035em;font-family:var(--ff);max-width:16ch}
+.bl-mock .m-p{margin:0;font-size:clamp(13px,1.15vw,17px);line-height:1.45;opacity:.8;max-width:36ch}
+.bl-mock .m-cta{align-self:flex-start;background:var(--acc);color:var(--on);padding:12px 18px;border-radius:var(--r);font-weight:700;font-size:clamp(12px,1vw,15px);transition:background-color 350ms ease}
+.bl-mock .m-media{grid-area:media;position:relative;border-radius:var(--r);background:var(--m1);overflow:hidden;min-height:0;transition:background-color 350ms ease}
+.bl-mock .m-shape{position:absolute;background:var(--m2);clip-path:polygon(36% 0,100% 0,64% 100%,0 100%);transition:background-color 350ms ease}
+.bl-mock .m-shape.a{left:14%;top:18%;width:52%;height:46%}
+.bl-mock .m-shape.b{left:40%;top:40%;width:52%;height:46%;background:var(--acc)}
+.bl-mock .m-cap{position:absolute;left:12px;bottom:10px;font-size:12px;font-weight:600;background:rgba(255,255,255,.85);color:#0F172A;padding:4px 8px;border-radius:6px}
+.bl-mock .m-items{grid-area:items;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3%}
+.bl-mock .m-it{display:flex;flex-direction:column;gap:8px;font-size:clamp(12px,1vw,15px);min-height:0}
+.bl-mock .m-thumb{flex:1;min-height:24px;border-radius:var(--r);background:var(--m1);transition:background-color 350ms ease}
+.bl-mock .m-it small{opacity:.7}
+.l-split .m-body{grid-template-columns:1.1fr 1fr;grid-template-rows:1fr 26%;grid-template-areas:"copy media" "items items"}
+.l-rev .m-body{grid-template-columns:1fr 1.1fr;grid-template-rows:1fr 26%;grid-template-areas:"media copy" "items items"}
+.l-grid .m-body{grid-template-columns:1fr;grid-template-rows:auto 1fr;grid-template-areas:"copy" "items"}
+.l-grid .m-media{display:none}
+.l-grid .m-copy{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:24px}
+.l-grid .m-copy .m-p{display:none}
+.l-center .m-body{grid-template-columns:1fr;grid-template-rows:auto 1fr;grid-template-areas:"copy" "media";text-align:center}
+.l-center .m-copy{align-items:center}
+.l-center .m-h{max-width:20ch}
+.l-center .m-cta{align-self:center}
+.l-center .m-items{display:none}
+.d-empresa{--bg:#FFFFFF;--fg:#0F172A;--acc:#2563EB;--on:#FFFFFF;--m1:#DBE4F3;--m2:#0F172A;--r:6px;--ff:Inter,sans-serif}
+.d-ecommerce{--bg:#FFF7ED;--fg:#1C1917;--acc:#EA580C;--on:#FFFFFF;--m1:#FED7AA;--m2:#9A3412;--r:14px;--ff:Inter,sans-serif}
+.d-personal{--bg:#18181B;--fg:#FAFAFA;--acc:#F43F5E;--on:#FFFFFF;--m1:#3F3F46;--m2:#A1A1AA;--r:2px;--ff:Georgia,serif}
+.d-startup{--bg:#0B1020;--fg:#E2E8F0;--acc:#22D3EE;--on:#0B1020;--m1:#1E293B;--m2:#334155;--r:999px;--ff:Inter,sans-serif}
+.d-gastro{--bg:#FBF3E6;--fg:#3B2416;--acc:#B45309;--on:#FFFFFF;--m1:#E9D5B7;--m2:#7C4A1E;--r:10px;--ff:Georgia,serif}
+.d-industria{--bg:#E7E5E4;--fg:#1C1917;--acc:#F59E0B;--on:#1C1917;--m1:#44403C;--m2:#A8A29E;--r:0px;--ff:Inter,sans-serif}
+.bl-side{background:#FFFFFF;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:20px}
+.bl-side dt{font-size:14px;font-weight:600;color:#64748B}
+.bl-side dd{margin:4px 0 0;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.bl-sw{display:flex;gap:8px;margin-top:8px}
+.bl-sw span{width:36px;height:36px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(15,23,42,.12);transition:background-color 350ms ease}
+
+/* Servicios */
+.bl-svc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,80px);margin-top:48px;align-items:start}
+.bl-svc-list{display:flex;flex-direction:column}
+.bl-svc-btn{display:flex;align-items:center;gap:16px;width:100%;text-align:left;font-family:inherit;font-size:clamp(22px,2.2vw,30px);font-weight:600;letter-spacing:-.03em;color:#94A3B8;background:transparent;border:0;padding:18px 0;cursor:pointer;transition:color 200ms ease}
+.bl-svc-btn::before{content:"";flex:none;width:22px;height:12px;background:#2563EB;clip-path:polygon(36% 0,100% 0,64% 100%,0 100%);opacity:0;transform:translateX(-8px);transition:opacity 200ms ease,transform 220ms cubic-bezier(.23,1,.32,1)}
+.bl-svc-btn.on{color:#0F172A}
+.bl-svc-btn.on::before{opacity:1;transform:none}
+@media (hover:hover) and (pointer:fine){.bl-svc-btn:not(.on):hover{color:#475569}}
+.bl-svc-panel{position:sticky;top:96px;background:#0F172A;color:#F8FAFC;border-radius:20px;padding:20px}
+.bl-prev{position:relative;aspect-ratio:16/10;border-radius:12px;background:#070B16;overflow:hidden}
+.bl-prev .pv{position:absolute;inset:0;opacity:0;transform:translateY(12px) scale(.98);transition:opacity 260ms ease,transform 300ms cubic-bezier(.23,1,.32,1);pointer-events:none}
+.s-medida .pv-medida,.s-responsive .pv-responsive,.s-tienda .pv-tienda,.s-landing .pv-landing,.s-rediseno .pv-rediseno,.s-consultoria .pv-consultoria{opacity:1;transform:none}
+.bl-prev .ab{position:absolute}
+.bl-fr{background:#F8FAFC;border-radius:8px;overflow:hidden}
+.bl-fr .bar{height:10%;background:#E5E7EB}
+.bl-svc-txt{padding:24px 8px 8px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bl-svc-txt p{margin:6px 0 0;font-size:17px;line-height:1.5;color:#E2E8F0}
+.bl-svc-txt span{font-size:14px;font-weight:600;color:#93B4FF}
+
+/* Proyectos */
+.bl-filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.bl-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:40px 24px;margin-top:40px}
+.bl-pc{grid-column:span 6;display:flex;flex-direction:column;gap:18px;text-decoration:none}
+.bl-pc.w7{grid-column:span 7}.bl-pc.w5{grid-column:span 5}.bl-pc.w12{grid-column:span 12}
+.bl-pc-m{position:relative;aspect-ratio:16/10;border-radius:14px;background:#1E293B;overflow:hidden}
+.bl-pc.w12 .bl-pc-m{aspect-ratio:21/8}
+.bl-pc-desk{position:absolute;left:6%;top:9%;width:74%;height:100%;border-radius:10px 10px 0 0;background:var(--bg);color:var(--fg);overflow:hidden;transition:transform 400ms cubic-bezier(.23,1,.32,1)}
+.bl-pc-desk .bar{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:13px;font-weight:700}
+.bl-pc-desk .bar i{font-style:normal;background:var(--acc);color:var(--on);padding:4px 10px;border-radius:var(--r);font-size:11px}
+.bl-pc-desk h4{margin:8% 0 0 7%;font-size:clamp(18px,2.1vw,30px);line-height:1;font-weight:700;letter-spacing:-.03em;font-family:var(--ff);max-width:13ch}
+.bl-pc-desk .blk{position:absolute;right:7%;top:24%;width:38%;height:48%;border-radius:var(--r);background:var(--m1)}
+.bl-pc-desk .blk::after{content:"";position:absolute;left:18%;top:22%;width:64%;height:56%;background:var(--acc);clip-path:polygon(36% 0,100% 0,64% 100%,0 100%)}
+.bl-pc-phone{position:absolute;right:6%;bottom:-6%;width:21%;aspect-ratio:9/18;border-radius:16px;background:var(--bg);box-shadow:0 0 0 5px #0B1020,0 20px 40px -10px rgba(0,0,0,.6);overflow:hidden;transition:transform 400ms cubic-bezier(.23,1,.32,1)}
+.bl-pc.w12 .bl-pc-phone{width:11%}
+.bl-pc-phone::before{content:"";position:absolute;left:12%;top:14%;width:76%;height:30%;border-radius:var(--r);background:var(--m1)}
+.bl-pc-phone::after{content:"";position:absolute;left:12%;bottom:12%;width:76%;height:9%;border-radius:var(--r);background:var(--acc)}
+@media (hover:hover) and (pointer:fine){.bl-pc:hover .bl-pc-desk{transform:translateY(-10px)}.bl-pc:hover .bl-pc-phone{transform:translateY(-22px)}}
+.bl-pc-t{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;align-items:baseline}
+.bl-pc-t h3{margin:0;font-size:24px;font-weight:600;letter-spacing:-.02em;color:#F8FAFC}
+.bl-pc-t span{font-size:14px;font-weight:600;color:#93B4FF}
+.bl-pc p{margin:0;font-size:16px;line-height:1.5;color:#A9B6D3;max-width:52ch}
+.pc-c1{--bg:#1C1917;--fg:#FAFAF9;--acc:#F59E0B;--on:#1C1917;--m1:#44403C;--r:0px;--ff:Inter,sans-serif}
+.pc-c2{--bg:#FBF3E6;--fg:#3B2416;--acc:#B45309;--on:#FFFFFF;--m1:#E9D5B7;--r:12px;--ff:Georgia,serif}
+.pc-c3{--bg:#FFFFFF;--fg:#0F172A;--acc:#2563EB;--on:#FFFFFF;--m1:#DBE4F3;--r:6px;--ff:Inter,sans-serif}
+.pc-c4{--bg:#0B1020;--fg:#E2E8F0;--acc:#22D3EE;--on:#0B1020;--m1:#1E293B;--r:999px;--ff:Inter,sans-serif}
+.pc-c5{--bg:#F0FDF4;--fg:#14532D;--acc:#16A34A;--on:#FFFFFF;--m1:#BBF7D0;--r:14px;--ff:Inter,sans-serif}
+
+/* Proceso */
+.bl-proc{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px);margin-top:48px;align-items:center}
+.bl-step{display:grid;grid-template-columns:56px 1fr;gap:4px 12px;width:100%;text-align:left;font-family:inherit;background:transparent;border:0;cursor:pointer;padding:18px 0;color:#94A3B8;transition:color 200ms ease}
+.bl-step b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;padding-top:6px}
+.bl-step strong{font-size:clamp(20px,1.9vw,26px);font-weight:600;letter-spacing:-.025em}
+.bl-step p{grid-column:2;margin:0;font-size:17px;line-height:1.55;color:#475569;max-height:0;opacity:0;overflow:hidden;transition:max-height 300ms cubic-bezier(.23,1,.32,1),opacity 200ms ease}
+.bl-step.on{color:#0F172A}
+.bl-step.on b{color:#2563EB}
+.bl-step.on p{max-height:140px;opacity:1}
+@media (hover:hover) and (pointer:fine){.bl-step:not(.on):hover{color:#475569}}
+.bl-pstage{position:relative;height:clamp(380px,36vw,520px);background:#070B16;border-radius:20px;overflow:hidden;perspective:1700px}
+.bl-pscene{position:absolute;left:50%;top:50%;width:600px;height:380px;margin:-190px 0 0 -300px;transform-style:preserve-3d;transform:scale(.78)}
+.bl-pstage .bl-iso{--gap:52px}
+.bl-pstage .bl-ly{opacity:0;transform:translateZ(calc(var(--i) * 52px + 160px));transition:transform 700ms cubic-bezier(.77,0,.175,1),opacity 400ms ease}
+.bl-pstage .bl-tag{opacity:0}
+.p0 .q0,.p1 .q0,.p1 .q1,.p2 .q0,.p2 .q1,.p2 .q2,.p3 .q0,.p3 .q1,.p3 .q2,.p3 .q3{opacity:1;transform:translateZ(calc(var(--i) * 52px))}
+.p0 .q0 .bl-tag,.p1 .q1 .bl-tag,.p2 .q2 .bl-tag,.p3 .q3 .bl-tag{opacity:1;transform:none;transition-delay:300ms}
+.bl-online{position:absolute;left:24px;top:24px;display:flex;align-items:center;gap:10px;background:#F8FAFC;color:#0F172A;border-radius:999px;padding:10px 16px;font-size:15px;font-weight:600;opacity:0;transform:translateY(-8px);transition:opacity 250ms ease,transform 300ms cubic-bezier(.23,1,.32,1)}
+.bl-online::before{content:"";width:10px;height:10px;border-radius:50%;background:#16A34A}
+.p3 .bl-online{opacity:1;transform:none;transition-delay:600ms}
+.bl-pstep-lbl{position:absolute;right:24px;bottom:20px;font-size:15px;font-weight:600;color:#C7D7FE}
+
+/* Por qué beta */
+.bl-why{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);margin-top:48px;align-items:start}
+.bl-cmp{position:relative;aspect-ratio:16/11;border-radius:14px;overflow:hidden;background:#E5E7EB}
+.bl-cmp .st{position:absolute;inset:0;transition:opacity 300ms ease,filter 300ms ease,transform 300ms cubic-bezier(.23,1,.32,1)}
+.bl-cmp .st-gen{background:#F3F4F6;color:#6B7280;display:flex;flex-direction:column;align-items:center;padding:7% 8%;gap:6%}
+.bl-cmp .st-est{background:#FBF3E6;color:#3B2416;padding:7% 8%;display:grid;grid-template-columns:1.2fr 1fr;gap:6%}
+.c-gen .st-est,.c-est .st-gen{opacity:0;filter:blur(6px);transform:scale(.985);pointer-events:none}
+.bl-note{position:absolute;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:6px 10px;border-radius:999px;white-space:nowrap}
+.bl-ben{display:grid;grid-template-columns:1fr 1fr;gap:32px 28px}
+.bl-ben h3{margin:0;font-size:19px;font-weight:600;letter-spacing:-.015em}
+.bl-ben p{margin:8px 0 0;font-size:16px;line-height:1.5;color:#475569}
+
+/* Consulta */
+.bl-cons{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:start}
+.bl-card{background:#F8FAFC;border-radius:20px;padding:clamp(24px,3vw,40px);min-height:520px;display:flex;flex-direction:column}
+.bl-segs{display:flex;gap:6px}
+.bl-segs span{flex:1;height:10px;background:#E2E8F0;clip-path:polygon(4% 0,100% 0,96% 100%,0 100%);transition:background-color 300ms ease}
+.bl-segs span.on{background:#2563EB}
+.bl-cstep{flex:1;display:flex;flex-direction:column;animation:bl-step 280ms cubic-bezier(.23,1,.32,1) both}
+@keyframes bl-step{from{opacity:0;transform:translateX(14px);filter:blur(4px)}}
+.bl-q{margin:28px 0 20px;font-size:clamp(24px,2.3vw,32px);line-height:1.1;font-weight:600;letter-spacing:-.03em}
+.bl-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bl-opt{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:16px 18px;text-align:left;font-family:inherit;font-size:17px;font-weight:600;color:#0F172A;background:#FFFFFF;border:0;border-radius:14px;box-shadow:inset 0 0 0 1.5px #E2E8F0;cursor:pointer;transition:box-shadow 180ms ease,background-color 180ms ease,transform 160ms cubic-bezier(.23,1,.32,1)}
+.bl-opt:active{transform:scale(.98)}
+.bl-opt::after{content:"";flex:none;width:18px;height:10px;background:#2563EB;clip-path:polygon(36% 0,100% 0,64% 100%,0 100%);opacity:0;transform:translateX(-6px);transition:opacity 180ms ease,transform 200ms cubic-bezier(.23,1,.32,1)}
+.bl-opt.on{box-shadow:inset 0 0 0 2px #2563EB;background:#EFF4FF}
+.bl-opt.on::after{opacity:1;transform:none}
+@media (hover:hover) and (pointer:fine){.bl-opt:not(.on):hover{box-shadow:inset 0 0 0 1.5px #94A3B8}}
+.bl-cnav{margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;gap:12px}
+.bl-sum{display:flex;flex-direction:column;gap:4px;margin:24px 0 0}
+.bl-sum div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0}
+.bl-sum dt{font-size:14px;font-weight:600;color:#64748B}
+.bl-sum dd{margin:2px 0 0;font-size:18px;font-weight:600}
+.bl-edit{font-family:inherit;font-size:14px;font-weight:600;color:#1D4ED8;background:transparent;border:0;cursor:pointer;padding:12px;border-radius:999px;text-decoration:underline;text-underline-offset:3px}
+
+/* CTA final */
+.bl-final{position:relative;overflow:hidden;background:#0B1020;color:#F8FAFC}
+.bl-final-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:center}
+.bl-x{position:relative;height:420px;perspective:1200px}
+.bl-xr{position:absolute;left:50%;top:50%;width:380px;height:240px;margin:-120px 0 0 -190px;transform-style:preserve-3d;will-change:transform}
+.bl-xr svg{position:absolute;inset:0;width:100%;height:100%}
+.bl-ft{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;padding:56px 0 40px;color:#A9B6D3;font-size:15px}
+.bl-ft a{text-decoration:none}
+@media (hover:hover) and (pointer:fine){.bl-ft a:hover{color:#FFFFFF}}
+
+/* Pantallas angostas */
+@container bl (max-width:1080px){.bl-scene{transform:scale(.8)}.bl-demo{grid-template-columns:1fr}.bl-side{flex-direction:row;flex-wrap:wrap}}
+@container bl (max-width:960px){.bl-links,.bl-bar > .bl-pill{display:none}.bl-burger{display:inline-flex}.bl-top,.bl-svc,.bl-proc,.bl-why,.bl-cons,.bl-final-in{grid-template-columns:1fr}.bl-svc-panel{position:relative;top:0}.bl-pc,.bl-pc.w7,.bl-pc.w5,.bl-pc.w12{grid-column:span 12}}
+@container bl (max-width:640px){.bl-scene{transform:scale(.52)}.bl-pscene{transform:scale(.5)}.bl-opts,.bl-ben,.bl-svc-txt{grid-template-columns:1fr}.bl-mock .m-links{display:none}.bl-tag{font-size:20px}}
+@media (prefers-reduced-motion:reduce){.bl *{animation:none!important;transition-duration:0ms!important;transition-delay:0ms!important}}
+</style>
+</helmet>
+<div class="bl" ref="{{ setRoot }}">
+
+  <header class="bl-hd {{ hdCls }}">
+    <div class="bl-bar">
+      <a class="bl-logo" href="#inicio" aria-label="beta, inicio">
+        <svg class="bl-mk" viewBox="0 0 270 170" style="height: 24px; width: auto; overflow: visible" aria-hidden="true"><polygon class="p1" points="95,0 195,0 100,130 0,130" fill="currentColor"></polygon><polygon class="p2" points="180,40 270,40 175,170 80,170" fill="#2563EB"></polygon></svg>
+        <b>beta</b>
+      </a>
+      <nav class="bl-links" aria-label="Principal">
+        <sc-for list="{{ navLinks }}" as="n" hint-placeholder-count="5"><a class="bl-lk {{ n.cls }}" href="{{ n.href }}">{{ n.label }}</a></sc-for>
+      </nav>
+      <a class="bl-pill pri" href="#consulta">Pedir una propuesta</a>
+      <button type="button" class="bl-burger" aria-expanded="{{ navOpenStr }}" aria-controls="bl-mnav" aria-label="Abrir menú" onClick="{{ toggleNav }}">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16"></path><path d="M8 16h12"></path></svg>
+      </button>
+      <span class="bl-prog" ref="{{ setProg }}" aria-hidden="true"></span>
+    </div>
+    <nav id="bl-mnav" class="bl-mnav" aria-label="Menú">
+      <sc-for list="{{ navLinks }}" as="n" hint-placeholder-count="5"><a href="{{ n.href }}" onClick="{{ closeNav }}">{{ n.label }}</a></sc-for>
+      <a href="#consulta" onClick="{{ closeNav }}" style="background: #2563EB; color: #FFFFFF; margin-top: 8px">Pedir una propuesta</a>
+    </nav>
+  </header>
+
+  <section id="inicio" class="bl-hero" aria-label="Presentación">
+    <svg class="bl-bgp" ref="{{ setBg1 }}" viewBox="0 0 270 130" style="left: -140px; top: 40px; width: 520px" aria-hidden="true"><defs><linearGradient id="blg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B82F6"></stop><stop offset="0.55" stop-color="#1D4ED8"></stop><stop offset="1" stop-color="#1E3A8A"></stop></linearGradient></defs><polygon points="95,0 270,0 175,130 0,130" fill="url(#blg1)"></polygon><polygon points="110,6 230,6 222,16 102,16" fill="#FFFFFF" opacity="0.25"></polygon></svg>
+    <svg class="bl-bgp" ref="{{ setBg2 }}" viewBox="0 0 270 130" style="right: -200px; top: 520px; width: 640px" aria-hidden="true"><defs><linearGradient id="blg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#334155"></stop><stop offset="1" stop-color="#0F172A"></stop></linearGradient></defs><polygon points="95,0 270,0 175,130 0,130" fill="url(#blg2)"></polygon><polygon points="110,6 230,6 222,16 102,16" fill="#FFFFFF" opacity="0.12"></polygon></svg>
+
+    <div class="bl-win">
+      <div class="bl-top">
+        <h1 class="bl-h1"><span class="w"><span style="animation-delay: 120ms">Sacamos</span></span> <span class="w"><span style="animation-delay: 190ms">tu</span></span> <span class="w"><span style="animation-delay: 260ms">marca</span></span> <span class="w"><span style="animation-delay: 330ms">de</span></span> <span class="w"><span style="animation-delay: 400ms">beta.</span></span></h1>
+        <div>
+          <p class="bl-sub">Diseñamos y desarrollamos webs a medida para empresas, comercios y marcas que quieren crecer: rápidas, claras y hechas para que te contacten.</p>
+          <div class="bl-ctas">
+            <a class="bl-pill pri big" href="#consulta">Pedir una propuesta</a>
+            <a class="bl-pill ghost big" href="#proyectos">Ver proyectos</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bl-stage" ref="{{ setStage }}" role="img" aria-label="Una página web armada en cuatro capas: estructura, diseño, contenido e interacción">
+        <div class="bl-glow"></div>
+        <div class="bl-scene">
+          <div class="bl-tilt" ref="{{ setTilt }}">
+            <div class="bl-iso {{ isoCls }}">
+              <div class="bl-ly bl-l0" style="--i: 0">
+                <div class="ab o" style="left: 4%; top: 3%; width: 92%; height: 8%"></div>
+                <div class="ab o" style="left: 6%; top: 20%; width: 44%; height: 44%"></div>
+                <div class="ab o" style="left: 56%; top: 18%; width: 38%; height: 52%"></div>
+                <div class="ab o" style="left: 6%; top: 69%; width: 22%; height: 10%"></div>
+                <div class="ab o" style="left: 6%; top: 84%; width: 27%; height: 10%"></div>
+                <div class="ab o" style="left: 36.5%; top: 84%; width: 27%; height: 10%"></div>
+                <div class="ab o" style="left: 67%; top: 84%; width: 27%; height: 10%"></div>
+                <span class="bl-tag">Estructura</span>
+              </div>
+              <div class="bl-ly bl-l1" style="--i: 1">
+                <div class="ab" style="left: 0; top: 0; width: 100%; height: 13%; background: #FFFFFF; border-radius: 10px 10px 0 0"></div>
+                <div class="ab" style="left: 56%; top: 18%; width: 38%; height: 52%; background: #2563EB; border-radius: 6px"></div>
+                <div class="ab" style="left: 6%; top: 84%; width: 27%; height: 10%; background: #E5E7EB; border-radius: 6px"></div>
+                <div class="ab" style="left: 36.5%; top: 84%; width: 27%; height: 10%; background: #E5E7EB; border-radius: 6px"></div>
+                <div class="ab" style="left: 67%; top: 84%; width: 27%; height: 10%; background: #E5E7EB; border-radius: 6px"></div>
+                <span class="bl-tag">Diseño</span>
+              </div>
+              <div class="bl-ly bl-l2" style="--i: 2">
+                <div class="ab" style="left: 6%; top: 3.5%; font-size: 15px; font-weight: 700; color: #0F172A; letter-spacing: -0.02em">Tu marca</div>
+                <div class="ab" style="right: 6%; top: 4%; display: flex; gap: 16px; font-size: 12px; color: #475569"><span>Servicios</span><span>Trabajos</span><span>Contacto</span></div>
+                <div class="ab" style="left: 6%; top: 22%; width: 46%; font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -0.04em; color: #0F172A">Lo que hacés, dicho claro.</div>
+                <div class="ab" style="left: 6%; top: 50%; width: 38%; height: 3%; background: #CBD5E1; border-radius: 4px"></div>
+                <div class="ab" style="left: 6%; top: 56%; width: 30%; height: 3%; background: #CBD5E1; border-radius: 4px"></div>
+                <div class="ab" style="left: 62%; top: 26%; width: 20%; height: 22%; background: #F8FAFC; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+                <div class="ab" style="left: 70%; top: 38%; width: 20%; height: 22%; background: #0F172A; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+                <span class="bl-tag">Contenido</span>
+              </div>
+              <div class="bl-ly bl-l3" style="--i: 3">
+                <div class="ab" style="left: 6%; top: 69%; width: 22%; height: 10%; background: #0F172A; color: #FFFFFF; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; box-shadow: 0 0 0 5px rgba(37,99,235,.35)">Escribinos</div>
+                <svg class="ab" viewBox="0 0 24 24" style="left: 24%; top: 74%; width: 28px; height: 28px" aria-hidden="true"><path d="M5 3l14 8-6 2-3 6z" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+                <div class="ab" style="right: 4%; top: 72%; display: flex; align-items: center; gap: 8px; background: #0F172A; color: #FFFFFF; font-size: 12px; font-weight: 600; padding: 8px 12px; border-radius: 10px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E"></span>Nueva consulta</div>
+                <span class="bl-tag">Interacción</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bl-marks">
+        <span class="pl" aria-hidden="true">+</span>
+        <span>Así está hecha una web: pasá el cursor por la escena.</span>
+        <button type="button" class="bl-pill dark" onClick="{{ pinToggle }}" aria-pressed="{{ pinStr }}">{{ pinLabel }}</button>
+        <span class="pl" aria-hidden="true">+</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" class="bl-sec" style="background: #F8FAFC">
+    <div class="bl-in">
+      <div style="display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-end; justify-content: space-between">
+        <h2 class="bl-h2" style="max-width: 14ch">Una idea. Infinitas posibilidades.</h2>
+        <p class="bl-lead" style="margin: 0; max-width: 44ch">Elegí un rubro y mirá cómo cambia la misma estructura. Son conceptos de demostración, no clientes reales.</p>
+      </div>
+      <div class="bl-filters" role="group" aria-label="Rubro">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="6"><button type="button" class="bl-chip {{ c.cls }}" aria-pressed="{{ c.pressed }}" onClick="{{ c.pick }}">{{ c.label }}</button></sc-for>
+      </div>
+      <div class="bl-demo">
+        <div class="bl-browser">
+          <div class="bl-chrome"><span class="url">concepto.beta/{{ d.slug }}</span><span class="tag">Concepto de demostración</span></div>
+          <div class="bl-mock d-{{ d.id }} l-{{ d.lay }} {{ swapCls }}" aria-live="polite">
+            <div class="m-nav"><b>{{ d.brand }}</b><span class="m-links"><span>{{ d.n1 }}</span><span>{{ d.n2 }}</span><span>{{ d.n3 }}</span></span><span class="m-btn">{{ d.cta }}</span></div>
+            <div class="m-body">
+              <div class="m-copy"><h3 class="m-h">{{ d.head }}</h3><p class="m-p">{{ d.sub }}</p><span class="m-cta">{{ d.cta }}</span></div>
+              <div class="m-media"><span class="m-shape a"></span><span class="m-shape b"></span><span class="m-cap">{{ d.media }}</span></div>
+              <div class="m-items">
+                <div class="m-it"><span class="m-thumb"></span><b>{{ d.i1 }}</b><small>{{ d.k }}</small></div>
+                <div class="m-it"><span class="m-thumb"></span><b>{{ d.i2 }}</b><small>{{ d.k }}</small></div>
+                <div class="m-it"><span class="m-thumb"></span><b>{{ d.i3 }}</b><small>{{ d.k }}</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <dl class="bl-side" style="margin: 0">
+          <div><dt>Composición</dt><dd>{{ d.layName }}</dd></div>
+          <div><dt>Paleta</dt><dd><div class="bl-sw d-{{ d.id }}"><span style="background: var(--bg)"></span><span style="background: var(--fg)"></span><span style="background: var(--acc)"></span><span style="background: var(--m1)"></span></div></dd></div>
+          <div><dt>Tono</dt><dd>{{ d.tone }}</dd></div>
+          <div><dt>Acción principal</dt><dd>{{ d.cta }}</dd></div>
+          <a class="bl-pill pri" href="#consulta" style="align-self: flex-start">Quiero algo así</a>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" class="bl-sec" style="background: #FFFFFF">
+    <div class="bl-in">
+      <h2 class="bl-h2">Lo que hacemos</h2>
+      <p class="bl-lead">Elegí un servicio para ver qué resuelve y qué te deja.</p>
+      <div class="bl-svc">
+        <div class="bl-svc-list" role="group" aria-label="Servicios">
+          <sc-for list="{{ svcs }}" as="s" hint-placeholder-count="6"><button type="button" class="bl-svc-btn {{ s.cls }}" aria-pressed="{{ s.pressed }}" onClick="{{ s.pick }}">{{ s.name }}</button></sc-for>
+        </div>
+        <div class="bl-svc-panel">
+          <div class="bl-prev s-{{ svc.id }}" aria-hidden="true">
+            <div class="pv pv-medida">
+              <div class="ab bl-fr" style="left: 10%; top: 12%; width: 80%; height: 80%"><div class="bar"></div><div class="ab" style="left: 52%; top: 22%; width: 40%; height: 60%; background: #2563EB; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div><div class="ab" style="left: 8%; top: 30%; width: 40%; height: 10%; background: #0F172A; border-radius: 4px"></div><div class="ab" style="left: 8%; top: 45%; width: 30%; height: 10%; background: #0F172A; border-radius: 4px"></div><div class="ab" style="left: 8%; top: 66%; width: 18%; height: 9%; background: #2563EB; border-radius: 999px"></div></div>
+            </div>
+            <div class="pv pv-responsive">
+              <div class="ab bl-fr" style="left: 8%; top: 14%; width: 62%; height: 72%"><div class="bar"></div><div class="ab" style="left: 8%; top: 28%; width: 50%; height: 12%; background: #0F172A; border-radius: 4px"></div><div class="ab" style="left: 62%; top: 24%; width: 30%; height: 56%; background: #2563EB; border-radius: 6px"></div></div>
+              <div class="ab bl-fr" style="left: 66%; top: 24%; width: 18%; height: 66%; border-radius: 14px; box-shadow: 0 0 0 4px #070B16"><div class="ab" style="left: 12%; top: 14%; width: 76%; height: 30%; background: #2563EB; border-radius: 6px"></div><div class="ab" style="left: 12%; top: 52%; width: 76%; height: 7%; background: #0F172A; border-radius: 3px"></div><div class="ab" style="left: 12%; bottom: 10%; width: 76%; height: 10%; background: #0F172A; border-radius: 999px"></div></div>
+            </div>
+            <div class="pv pv-tienda">
+              <div class="ab bl-fr" style="left: 10%; top: 12%; width: 80%; height: 80%"><div class="bar"></div><div class="ab" style="right: 4%; top: 2%; width: 14%; height: 6%; background: #2563EB; border-radius: 999px"></div><div class="ab" style="left: 6%; top: 18%; width: 88%; height: 76%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 6%"><span style="background: #E5E7EB; border-radius: 6px"></span><span style="background: #E5E7EB; border-radius: 6px"></span><span style="background: #DBE4F3; border-radius: 6px"></span><span style="background: #E5E7EB; border-radius: 6px"></span><span style="background: #DBE4F3; border-radius: 6px"></span><span style="background: #E5E7EB; border-radius: 6px"></span></div></div>
+            </div>
+            <div class="pv pv-landing">
+              <div class="ab bl-fr" style="left: 34%; top: 6%; width: 32%; height: 100%"><div class="bar"></div><div class="ab" style="left: 10%; top: 16%; width: 80%; height: 6%; background: #0F172A; border-radius: 3px"></div><div class="ab" style="left: 10%; top: 25%; width: 60%; height: 6%; background: #0F172A; border-radius: 3px"></div><div class="ab" style="left: 10%; top: 38%; width: 46%; height: 8%; background: #2563EB; border-radius: 999px; box-shadow: 0 0 0 6px rgba(37,99,235,.3)"></div><div class="ab" style="left: 10%; top: 54%; width: 80%; height: 24%; background: #E5E7EB; border-radius: 6px"></div></div>
+            </div>
+            <div class="pv pv-rediseno">
+              <div class="ab bl-fr" style="left: 6%; top: 16%; width: 42%; height: 68%; background: #D1D5DB"><div class="bar" style="background: #9CA3AF"></div><div class="ab" style="left: 20%; top: 30%; width: 60%; height: 8%; background: #9CA3AF"></div><div class="ab" style="left: 10%; top: 56%; width: 24%; height: 30%; background: #9CA3AF"></div><div class="ab" style="left: 38%; top: 56%; width: 24%; height: 30%; background: #9CA3AF"></div><div class="ab" style="left: 66%; top: 56%; width: 24%; height: 30%; background: #9CA3AF"></div></div>
+              <div class="ab" style="left: 49%; top: 46%; width: 2%; height: 8%; background: #2563EB; clip-path: polygon(0 0,100% 50%,0 100%)"></div>
+              <div class="ab bl-fr" style="left: 52%; top: 16%; width: 42%; height: 68%"><div class="bar"></div><div class="ab" style="left: 8%; top: 26%; width: 50%; height: 12%; background: #0F172A; border-radius: 4px"></div><div class="ab" style="left: 8%; top: 46%; width: 30%; height: 10%; background: #2563EB; border-radius: 999px"></div><div class="ab" style="left: 60%; top: 22%; width: 32%; height: 60%; background: #2563EB; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div></div>
+            </div>
+            <div class="pv pv-consultoria">
+              <div class="ab" style="left: 10%; top: 54%; width: 26%; height: 22%; background: #334155; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+              <div class="ab" style="left: 36%; top: 38%; width: 26%; height: 22%; background: #64748B; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+              <div class="ab" style="left: 62%; top: 22%; width: 26%; height: 22%; background: #2563EB; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+              <span class="ab" style="left: 14%; top: 80%; font-size: 14px; font-weight: 600; color: #CBD5E1">Hoy</span>
+              <span class="ab" style="left: 40%; top: 64%; font-size: 14px; font-weight: 600; color: #CBD5E1">Próximo</span>
+              <span class="ab" style="left: 66%; top: 48%; font-size: 14px; font-weight: 600; color: #FFFFFF">Después</span>
+            </div>
+          </div>
+          <div class="bl-svc-txt" aria-live="polite">
+            <div><span>Qué resuelve</span><p>{{ svc.res }}</p></div>
+            <div><span>Qué te deja</span><p>{{ svc.ben }}</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos" class="bl-sec bl-dark">
+    <div class="bl-in">
+      <div style="display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-end; justify-content: space-between">
+        <h2 class="bl-h2">Proyectos</h2>
+        <p class="bl-lead" style="margin: 0; max-width: 46ch">Conceptos visuales de beta que muestran cómo pensamos cada rubro. Los trabajos reales se suman acá cuando estén publicados.</p>
+      </div>
+      <div class="bl-filters" role="group" aria-label="Tipo de proyecto">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4"><button type="button" class="bl-chip {{ f.cls }}" aria-pressed="{{ f.pressed }}" onClick="{{ f.pick }}">{{ f.label }}</button></sc-for>
+      </div>
+      <div class="bl-grid">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="5">
+          <a class="bl-pc {{ p.cls }}" href="#consulta" aria-label="{{ p.aria }}">
+            <div class="bl-pc-m" aria-hidden="true">
+              <div class="bl-pc-desk"><div class="bar"><span>{{ p.name }}</span><i>{{ p.cta }}</i></div><h4>{{ p.head }}</h4><div class="blk"></div></div>
+              <div class="bl-pc-phone"></div>
+            </div>
+            <div class="bl-pc-t"><h3>{{ p.name }}</h3><span>Concepto · {{ p.kind }}</span></div>
+            <p>{{ p.desc }}</p>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="proceso" class="bl-sec" style="background: #F8FAFC">
+    <div class="bl-in">
+      <h2 class="bl-h2">Cómo trabajamos</h2>
+      <p class="bl-lead">Cuatro etapas. En cada una, la idea suma una capa hasta estar online.</p>
+      <div class="bl-proc">
+        <div role="group" aria-label="Etapas">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4"><button type="button" class="bl-step {{ s.cls }}" aria-pressed="{{ s.pressed }}" onClick="{{ s.pick }}"><b>{{ s.n }}</b><strong>{{ s.title }}</strong><p>{{ s.text }}</p></button></sc-for>
+          <div style="margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap">
+            <button type="button" class="bl-pill dark" onClick="{{ nextStep }}">{{ nextStepLabel }}</button>
+            <a class="bl-pill ghost" href="#consulta">Empezar por la etapa 01</a>
+          </div>
+        </div>
+        <div class="bl-pstage p{{ step }}" aria-hidden="true">
+          <div class="bl-glow"></div>
+          <div class="bl-pscene">
+            <div class="bl-iso">
+              <div class="bl-ly bl-l0 q0" style="--i: 0">
+                <div class="ab o" style="left: 4%; top: 3%; width: 92%; height: 8%"></div>
+                <div class="ab o" style="left: 6%; top: 20%; width: 44%; height: 44%"></div>
+                <div class="ab o" style="left: 56%; top: 18%; width: 38%; height: 52%"></div>
+                <div class="ab o" style="left: 6%; top: 69%; width: 22%; height: 10%"></div>
+                <div class="ab o" style="left: 6%; top: 84%; width: 88%; height: 10%"></div>
+                <span class="bl-tag">Estructura</span>
+              </div>
+              <div class="bl-ly bl-l1 q1" style="--i: 1">
+                <div class="ab" style="left: 0; top: 0; width: 100%; height: 13%; background: #FFFFFF; border-radius: 10px 10px 0 0"></div>
+                <div class="ab" style="left: 56%; top: 18%; width: 38%; height: 52%; background: #2563EB; border-radius: 6px"></div>
+                <div class="ab" style="left: 6%; top: 84%; width: 88%; height: 10%; background: #E5E7EB; border-radius: 6px"></div>
+                <span class="bl-tag">Diseño</span>
+              </div>
+              <div class="bl-ly bl-l2 q2" style="--i: 2">
+                <div class="ab" style="left: 6%; top: 3.5%; font-size: 15px; font-weight: 700; color: #0F172A">Tu marca</div>
+                <div class="ab" style="left: 6%; top: 22%; width: 46%; font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -0.04em; color: #0F172A">Lo que hacés, dicho claro.</div>
+                <div class="ab" style="left: 62%; top: 26%; width: 20%; height: 22%; background: #F8FAFC; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+                <div class="ab" style="left: 70%; top: 38%; width: 20%; height: 22%; background: #0F172A; clip-path: polygon(36% 0,100% 0,64% 100%,0 100%)"></div>
+                <span class="bl-tag">Contenido</span>
+              </div>
+              <div class="bl-ly bl-l3 q3" style="--i: 3">
+                <div class="ab" style="left: 6%; top: 69%; width: 22%; height: 10%; background: #0F172A; color: #FFFFFF; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">Escribinos</div>
+                <div class="ab" style="right: 4%; top: 72%; display: flex; align-items: center; gap: 8px; background: #0F172A; color: #FFFFFF; font-size: 12px; font-weight: 600; padding: 8px 12px; border-radius: 10px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E"></span>Nueva consulta</div>
+                <span class="bl-tag">Interacción</span>
+              </div>
+            </div>
+          </div>
+          <span class="bl-online">Online · tumarca.com.ar</span>
+          <span class="bl-pstep-lbl">Etapa {{ stepN }} de 4</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="porque" class="bl-sec" style="background: #FFFFFF">
+    <div class="bl-in">
+      <h2 class="bl-h2">¿Por qué beta?</h2>
+      <p class="bl-lead">La diferencia entre una web que existe y una web que trabaja para tu negocio.</p>
+      <div class="bl-why">
+        <div>
+          <div class="bl-filters" role="group" aria-label="Comparar" style="margin-top: 0">
+            <sc-for list="{{ cmpOpts }}" as="o" hint-placeholder-count="2"><button type="button" class="bl-chip {{ o.cls }}" aria-pressed="{{ o.pressed }}" onClick="{{ o.pick }}">{{ o.label }}</button></sc-for>
+          </div>
+          <div class="bl-cmp c-{{ cmp }}" style="margin-top: 16px" aria-live="polite">
+            <div class="st st-gen">
+              <div style="width: 100%; display: flex; justify-content: space-between; font-size: 13px"><span>Logo</span><span>Inicio · Nosotros · Servicios · Contacto</span></div>
+              <p style="margin: 6% 0 0; font-size: clamp(18px, 2vw, 28px); font-weight: 600; text-align: center">Bienvenidos a nuestro sitio web</p>
+              <p style="margin: 0; font-size: 14px; text-align: center">Somos una empresa líder comprometida con la excelencia.</p>
+              <div style="width: 100%; flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4%"><span style="background: #E5E7EB; border-radius: 8px"></span><span style="background: #E5E7EB; border-radius: 8px"></span><span style="background: #E5E7EB; border-radius: 8px"></span></div>
+            </div>
+            <div class="st st-est">
+              <div style="display: flex; flex-direction: column; justify-content: center; gap: 18px">
+                <b style="font-size: 14px">Fermento · panadería</b>
+                <p style="margin: 0; font-family: Georgia, serif; font-size: clamp(24px, 2.8vw, 40px); line-height: 1; font-weight: 700; letter-spacing: -0.02em">Pan de masa madre, cada mañana.</p>
+                <span style="align-self: flex-start; background: #B45309; color: #FFFFFF; font-size: 14px; font-weight: 700; padding: 10px 16px; border-radius: 10px">Pedir por WhatsApp</span>
+                <span style="font-size: 13px">Abierto hoy hasta [HORA] · [DIRECCIÓN]</span>
+              </div>
+              <div style="background: #E9D5B7; border-radius: 10px; position: relative"><span style="position: absolute; left: 12px; bottom: 10px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,.85); padding: 4px 8px; border-radius: 6px">Foto real del producto</span></div>
+              <span class="bl-note" style="left: 6%; top: 6%">Qué hacés, en una línea</span>
+              <span class="bl-note" style="left: 30%; top: 66%">Una acción clara</span>
+              <span class="bl-note" style="left: 6%; bottom: 5%">Lo que el cliente busca primero</span>
+            </div>
+          </div>
+          <p style="margin: 12px 0 0; font-size: 14px; color: #64748B">Ejemplo conceptual para comparar enfoques.</p>
+        </div>
+        <div class="bl-ben">
+          <div><h3>Diseño a medida</h3><p>Partimos de tu negocio, no de una plantilla.</p></div>
+          <div><h3>Responsive de verdad</h3><p>Cada pantalla se diseña también para el celular.</p></div>
+          <div><h3>Proceso claro</h3><p>Sabés en qué etapa está tu web y qué viene después.</p></div>
+          <div><h3>Comunicación directa</h3><p>Hablás con quienes diseñan y programan tu sitio.</p></div>
+          <div><h3>Foco en tus objetivos</h3><p>Cada sección existe para que te contacten o te compren.</p></div>
+          <div><h3>Implementación cuidada</h3><p>Código rápido, seguro y fácil de mantener.</p></div>
+          <a class="bl-pill pri big" href="#consulta" style="align-self: start">Hablemos de tu web</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="consulta" class="bl-sec" style="background: #2563EB; color: #FFFFFF">
+    <div class="bl-in bl-cons">
+      <div>
+        <h2 class="bl-h2" style="max-width: 12ch">Contanos tu proyecto en cuatro toques.</h2>
+        <p class="bl-lead" style="color: #DBE6FF">Sin formularios largos. Al final ves el resumen y lo mandás por WhatsApp, cuando quieras.</p>
+      </div>
+      <div class="bl-card" style="color: #0F172A">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px">
+          <div class="bl-segs" style="flex: 1" aria-hidden="true"><sc-for list="{{ segs }}" as="g" hint-placeholder-count="4"><span class="{{ g.cls }}"></span></sc-for></div>
+          <span style="font-size: 14px; font-weight: 600; color: #475569">{{ cLabel }}</span>
+        </div>
+        <sc-if value="{{ c.ask }}" hint-placeholder-val="{{ true }}">
+          <div class="bl-cstep" key="{{ c.key }}">
+            <h3 class="bl-q">{{ c.q }}</h3>
+            <div class="bl-opts" role="group" aria-label="{{ c.q }}">
+              <sc-for list="{{ c.opts }}" as="o" hint-placeholder-count="4"><button type="button" class="bl-opt {{ o.cls }}" aria-pressed="{{ o.pressed }}" onClick="{{ o.pick }}">{{ o.label }}</button></sc-for>
+            </div>
+            <div class="bl-cnav">
+              <button type="button" class="bl-pill ghost" onClick="{{ cBack }}" disabled="{{ c.backDisabled }}">Atrás</button>
+              <button type="button" class="bl-pill pri" onClick="{{ cNext }}" disabled="{{ c.nextDisabled }}">{{ c.nextLabel }}</button>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ c.done }}" hint-placeholder-val="{{ false }}">
+          <div class="bl-cstep">
+            <h3 class="bl-q" style="margin-bottom: 0">Tu consulta, lista.</h3>
+            <div class="bl-sum">
+              <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4"><div><span><span style="display: block; font-size: 14px; font-weight: 600; color: #64748B">{{ s.q }}</span><span style="display: block; margin-top: 2px; font-size: 18px; font-weight: 600">{{ s.a }}</span></span><button type="button" class="bl-edit" onClick="{{ s.edit }}">Cambiar</button></div></sc-for>
+            </div>
+            <p style="margin: 16px 0 0; font-size: 15px; line-height: 1.5; color: #475569">Todavía no se envió nada: el resumen se abre en WhatsApp para que lo mandes vos.</p>
+            <div class="bl-cnav" style="flex-wrap: wrap; justify-content: flex-start">
+              <a class="bl-pill pri big" href="{{ waHref }}" target="_blank" rel="noopener noreferrer">Continuar por WhatsApp</a>
+              <button type="button" class="bl-pill ghost big" onClick="{{ copySum }}">{{ copyLabel }}</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="bl-final" ref="{{ setFinal }}">
+    <div class="bl-in" style="padding-top: clamp(96px, 11vw, 168px); padding-bottom: 40px">
+      <div class="bl-final-in">
+        <div>
+          <h2 class="bl-h2" style="font-size: clamp(44px, 6.4vw, 96px); max-width: 12ch">Tu próximo proyecto merece una mejor web.</h2>
+          <div style="margin-top: 36px; display: flex; flex-wrap: wrap; gap: 10px">
+            <a class="bl-pill pri big" href="#consulta">Pedir una propuesta</a>
+            <a class="bl-pill light big" href="#consulta">Escribinos por WhatsApp</a>
+          </div>
+        </div>
+        <div class="bl-x" aria-hidden="true">
+          <div class="bl-glow" style="top: 55%"></div>
+          <div class="bl-xr" ref="{{ setX }}">
+            <svg viewBox="0 0 270 170" style="transform: translateZ(-24px)"><polygon points="95,0 195,0 100,130 0,130" fill="#0F172A"></polygon><polygon points="180,40 270,40 175,170 80,170" fill="#1E3A8A"></polygon></svg>
+            <svg viewBox="0 0 270 170" style="transform: translateZ(-16px)"><polygon points="95,0 195,0 100,130 0,130" fill="#1E293B"></polygon><polygon points="180,40 270,40 175,170 80,170" fill="#1E40AF"></polygon></svg>
+            <svg viewBox="0 0 270 170" style="transform: translateZ(-8px)"><polygon points="95,0 195,0 100,130 0,130" fill="#334155"></polygon><polygon points="180,40 270,40 175,170 80,170" fill="#1D4ED8"></polygon></svg>
+            <svg viewBox="0 0 270 170" style="transform: translateZ(0)"><polygon points="95,0 195,0 100,130 0,130" fill="#F8FAFC"></polygon><polygon points="180,40 270,40 175,170 80,170" fill="#2563EB"></polygon><polygon points="104,6 186,6 183,12 101,12" fill="#FFFFFF"></polygon></svg>
+          </div>
+        </div>
+      </div>
+      <footer class="bl-ft">
+        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 320px">
+          <span class="bl-logo" style="color: #FFFFFF"><svg viewBox="0 0 270 170" style="height: 22px; width: auto" aria-hidden="true"><polygon points="95,0 195,0 100,130 0,130" fill="#FFFFFF"></polygon><polygon points="180,40 270,40 175,170 80,170" fill="#2563EB"></polygon></svg><b style="font-size: 24px">beta</b></span>
+          <span>Ideas que funcionan en el mundo real.</span>
+        </div>
+        <nav aria-label="Pie" style="display: flex; flex-direction: column; gap: 10px">
+          <a href="#demo">Demo</a><a href="#servicios">Servicios</a><a href="#proyectos">Proyectos</a><a href="#proceso">Proceso</a>
+        </nav>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span style="color: #FFFFFF; font-weight: 600">Contacto</span>
+          <span>[EMAIL]</span><span>[WHATSAPP]</span><span>beta.ar</span>
+        </div>
+        <span style="align-self: flex-end">© 2026 beta</span>
+      </footer>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":8400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scrolled: false, navOpen: false, active: '', pinned: false, explode: true,
+      cat: 'empresa', swap: false, svc: 'medida', filter: 'todos', step: 0, cmp: 'est',
+      cStep: 0, ans: {}, copied: false
+    };
+    this.tilt = { x: 0, y: 0, vx: 0, vy: 0 };
+    this.xr = { x: 0, y: 0, vx: 0, vy: 0 };
+    this.tTarget = null; this.xTarget = null; this.hovering = false;
+    this.setRoot = (el) => { this.root = el; };
+    this.setStage = (el) => { this.stage = el; };
+    this.setTilt = (el) => { this.tiltEl = el; };
+    this.setProg = (el) => { this.prog = el; };
+    this.setBg1 = (el) => { this.bg1 = el; };
+    this.setBg2 = (el) => { this.bg2 = el; };
+    this.setFinal = (el) => { this.final = el; };
+    this.setX = (el) => { this.xEl = el; };
+    this.tick = this.tick.bind(this);
+    this.toggleNav = () => this.setState({ navOpen: !this.state.navOpen });
+    this.closeNav = () => this.setState({ navOpen: false });
+    this.pinToggle = () => {
+      const pinned = !this.state.pinned;
+      this.setState({ pinned: pinned, explode: pinned || this.hovering });
+    };
+    this.nextStep = () => this.setState({ step: (this.state.step + 1) % 4 });
+    this.cBack = () => this.setState({ cStep: Math.max(0, this.state.cStep - 1) });
+    this.cNext = () => this.setState({ cStep: Math.min(4, this.state.cStep + 1) });
+    this.copySum = () => {
+      const text = this.summaryText();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            this.setState({ copied: true });
+            clearTimeout(this.cpT);
+            this.cpT = setTimeout(() => this.setState({ copied: false }), 1600);
+          }, () => {});
+        }
+      } catch (e) {}
+    };
+
+    this.cats = [
+      { id: 'empresa', label: 'Empresa y servicios', slug: 'estudio-norte', brand: 'Estudio Norte', head: 'Asesoramiento contable para pymes que quieren crecer.', sub: 'Turnos online y respuesta en el día.', cta: 'Pedir turno', n1: 'Servicios', n2: 'Equipo', n3: 'Contacto', media: 'Foto del equipo', i1: 'Impuestos', i2: 'Sueldos', i3: 'Sociedades', k: 'Ver servicio', lay: 'split', layName: 'Dividida: texto e imagen', tone: 'Sobrio y confiable' },
+      { id: 'ecommerce', label: 'E-commerce', slug: 'kiosko-verde', brand: 'Kiosko Verde', head: 'Plantas de interior con envío en el día.', sub: 'Elegí, pagá online y recibí en tu casa.', cta: 'Ver tienda', n1: 'Tienda', n2: 'Envíos', n3: 'Ayuda', media: 'Foto de producto', i1: 'Monstera', i2: 'Pothos', i3: 'Ficus', k: '[PRECIO]', lay: 'grid', layName: 'Catálogo en grilla', tone: 'Cercano y directo' },
+      { id: 'personal', label: 'Marca personal', slug: 'sofia-r', brand: 'Sofía R.', head: 'Fotografía de retrato con luz natural.', sub: 'Sesiones en estudio y en exteriores.', cta: 'Reservar sesión', n1: 'Trabajos', n2: 'Sobre mí', n3: 'Contacto', media: 'Retrato destacado', i1: 'Retratos', i2: 'Familias', i3: 'Marcas', k: 'Ver galería', lay: 'center', layName: 'Centrada, la imagen manda', tone: 'Personal y cálido' },
+      { id: 'startup', label: 'Startup tecnológica', slug: 'nodo', brand: 'Nodo', head: 'Facturá en segundos desde el celular.', sub: 'Probalo gratis durante [PERÍODO].', cta: 'Crear cuenta', n1: 'Producto', n2: 'Precios', n3: 'Ingresar', media: 'Captura de la app', i1: 'Facturas', i2: 'Cobros', i3: 'Reportes', k: 'Conocer más', lay: 'center', layName: 'Producto al centro', tone: 'Preciso y técnico' },
+      { id: 'gastro', label: 'Gastronomía y comercios', slug: 'fermento', brand: 'Fermento', head: 'Pan de masa madre, horneado cada mañana.', sub: 'Retirá en el local o pedí por WhatsApp.', cta: 'Ver la carta', n1: 'Carta', n2: 'Local', n3: 'Pedidos', media: 'Foto del local', i1: 'Hogaza', i2: 'Medialunas', i3: 'Focaccia', k: '[PRECIO]', lay: 'grid', layName: 'Carta en grilla', tone: 'Artesanal y amable' },
+      { id: 'industria', label: 'Industria y construcción', slug: 'obra-sur', brand: 'Obra Sur', head: 'Naves industriales llave en mano.', sub: 'Proyecto, cálculo y ejecución en un solo equipo.', cta: 'Pedir cotización', n1: 'Obras', n2: 'Servicios', n3: 'Empresa', media: 'Foto de obra', i1: 'Naves', i2: 'Galpones', i3: 'Oficinas', k: 'Ver obras', lay: 'rev', layName: 'Imagen primero, texto al lado', tone: 'Firme y técnico' }
+    ];
+    this.svcs = [
+      { id: 'medida', name: 'Diseño y desarrollo a medida', res: 'Una web que no representa lo que hacés ni cómo lo hacés.', ben: 'Un sitio único, pensado desde tu negocio y fácil de mantener.' },
+      { id: 'responsive', name: 'Sitios responsive y optimizados', res: 'Visitas que se van porque la página tarda o se ve mal en el celular.', ben: 'Carga rápida y lectura cómoda en cualquier pantalla.' },
+      { id: 'tienda', name: 'Tiendas online', res: 'Vender solo por mensajes, con stock y precios a mano.', ben: 'Catálogo, carrito y cobro con proveedores de pago especializados.' },
+      { id: 'landing', name: 'Landing pages', res: 'Campañas que llevan gente a una página que no convierte.', ben: 'Una página, una acción clara y medible.' },
+      { id: 'rediseno', name: 'Rediseño y modernización', res: 'Una web vieja que ya no te representa.', ben: 'Conservamos lo que funciona y renovamos lo demás.' },
+      { id: 'consultoria', name: 'Consultoría y estrategia digital', res: 'No saber por dónde empezar ni qué herramientas hacen falta.', ben: 'Un plan claro de qué hacer primero y qué no.' }
+    ];
+    this.projects = [
+      { id: 'c1', name: 'Obra Sur', kind: 'Sitio', f: 'sitio', size: 'w7', cta: 'Cotizar', head: 'Naves industriales llave en mano.', desc: 'Constructora: obras como protagonistas y cotización en dos pasos.' },
+      { id: 'c2', name: 'Fermento', kind: 'Tienda', f: 'tienda', size: 'w5', cta: 'Pedir', head: 'Pan de masa madre, cada mañana.', desc: 'Panadería: carta con precios y pedidos por WhatsApp.' },
+      { id: 'c3', name: 'Estudio Norte', kind: 'Sitio', f: 'sitio', size: 'w5', cta: 'Turno', head: 'Contadores para pymes.', desc: 'Estudio contable: servicios claros y turnos online.' },
+      { id: 'c4', name: 'Nodo', kind: 'Landing', f: 'landing', size: 'w7', cta: 'Probar', head: 'Facturá desde el celular.', desc: 'App de facturación: una página, una acción, registro directo.' },
+      { id: 'c5', name: 'Kiosko Verde', kind: 'Tienda', f: 'tienda', size: 'w12', cta: 'Comprar', head: 'Plantas con envío en el día.', desc: 'Vivero online: catálogo filtrable y checkout simple.' }
+    ];
+    this.steps = [
+      { n: '01', title: 'Descubrimiento y estrategia', text: 'Entendemos el negocio, el público y la acción que la web tiene que lograr. Definimos estructura y contenidos.' },
+      { n: '02', title: 'Diseño y prototipado', text: 'Diseñamos la propuesta completa en celular y computadora, y la revisás antes de programar.' },
+      { n: '03', title: 'Desarrollo e implementación', text: 'Construimos el sitio con código rápido y seguro, cargamos el contenido y conectamos formularios y WhatsApp.' },
+      { n: '04', title: 'Lanzamiento y evolución', text: 'Publicamos con tu dominio y HTTPS, y definimos juntos cómo sigue después.' }
+    ];
+    this.qs = [
+      { key: 'tipo', q: '¿Qué necesitás?', short: 'Proyecto', opts: ['Sitio institucional', 'Tienda online', 'Landing page', 'Todavía no sé'] },
+      { key: 'inicio', q: '¿Partís de cero o ya tenés web?', short: 'Punto de partida', opts: ['Empiezo de cero', 'Quiero renovar mi web'] },
+      { key: 'obj', q: '¿Qué tiene que lograr?', short: 'Objetivo', opts: ['Más consultas', 'Vender online', 'Mejorar mi imagen', 'Ordenar mi presencia digital'] },
+      { key: 'pres', q: '¿Tenés un presupuesto pensado?', short: 'Presupuesto', opts: ['Prefiero hablarlo', '[RANGO 1]', '[RANGO 2]', '[RANGO 3]'], optional: true }
+    ];
+  }
+
+  summaryText() {
+    const a = this.state.ans;
+    return 'Hola beta, quiero hacer una consulta. ' + this.qs.map((q) => q.short + ': ' + (a[q.key] || 'Sin indicar')).join('. ') + '.';
+  }
+
+  tick(now) {
+    // Escena del hero: inclinación con resorte
+    if (this.tiltEl) {
+      const t = this.tilt;
+      let tx = 0, ty = 0;
+      if (this.tTarget) { tx = this.tTarget.x; ty = this.tTarget.y; }
+      else { const s = (now - this.t0) / 1000; tx = Math.sin(s * 0.35) * 4; ty = Math.cos(s * 0.28) * 3; }
+      t.vy = (t.vy + (tx - t.y) * 0.06) * 0.8; t.vx = (t.vx + (ty - t.x) * 0.06) * 0.8;
+      t.y += t.vy; t.x += t.vx;
+      this.tiltEl.style.transform = 'rotateX(' + t.x.toFixed(2) + 'deg) rotateY(' + t.y.toFixed(2) + 'deg)';
+    }
+    // Isotipo 3D del cierre
+    if (this.xEl) {
+      const r = this.xr;
+      let tx, ty;
+      if (this.xTarget) { tx = this.xTarget.x; ty = this.xTarget.y; }
+      else { const s = (now - this.t0) / 1000; tx = -18 + Math.sin(s * 0.5) * 10; ty = 14 + Math.cos(s * 0.4) * 6; }
+      r.vy = (r.vy + (tx - r.y) * 0.05) * 0.8; r.vx = (r.vx + (ty - r.x) * 0.05) * 0.8;
+      r.y += r.vy; r.x += r.vx;
+      this.xEl.style.transform = 'rotateX(' + r.x.toFixed(2) + 'deg) rotateY(' + r.y.toFixed(2) + 'deg)';
+    }
+    this.raf = requestAnimationFrame(this.tick);
+  }
+
+  onScroll() {
+    const y = window.scrollY || 0;
+    const scrolled = y > 24;
+    if (scrolled !== this.state.scrolled) this.setState({ scrolled: scrolled });
+    const doc = document.documentElement;
+    const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+    if (this.prog) this.prog.style.transform = 'scaleX(' + Math.min(1, y / max).toFixed(4) + ')';
+    if (!this.reduce) {
+      if (this.bg1) this.bg1.style.transform = 'translateY(' + (y * 0.18).toFixed(1) + 'px)';
+      if (this.bg2) this.bg2.style.transform = 'translateY(' + (y * -0.1).toFixed(1) + 'px)';
+    }
+  }
+
+  componentDidMount() {
+    this.reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this.scrollH = () => this.onScroll();
+    window.addEventListener('scroll', this.scrollH, { passive: true });
+    this.onScroll();
+
+    if (this.stage) {
+      this.sMove = (e) => {
+        const b = this.stage.getBoundingClientRect();
+        const px = (e.clientX - b.left) / b.width, py = (e.clientY - b.top) / b.height;
+        this.stage.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+        this.stage.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+        if (e.pointerType !== 'touch' && !this.reduce) this.tTarget = { x: (px - 0.5) * 18, y: -(py - 0.5) * 12 };
+      };
+      this.sEnter = (e) => { if (e.pointerType === 'touch') return; this.hovering = true; if (!this.state.explode) this.setState({ explode: true }); };
+      this.sLeave = () => { this.hovering = false; this.tTarget = null; if (!this.state.pinned) this.setState({ explode: false }); };
+      this.stage.addEventListener('pointermove', this.sMove);
+      this.stage.addEventListener('pointerenter', this.sEnter);
+      this.stage.addEventListener('pointerleave', this.sLeave);
+    }
+    if (this.final) {
+      this.fMove = (e) => {
+        if (e.pointerType === 'touch' || this.reduce) return;
+        const b = this.final.getBoundingClientRect();
+        this.xTarget = { x: ((e.clientX - b.left) / b.width - 0.5) * 50, y: -((e.clientY - b.top) / b.height - 0.5) * 30 };
+      };
+      this.fLeave = () => { this.xTarget = null; };
+      this.final.addEventListener('pointermove', this.fMove);
+      this.final.addEventListener('pointerleave', this.fLeave);
+    }
+    // Secuencia de carga: la web llega desarmada y se arma sola
+    this.loadT = setTimeout(() => { if (!this.hovering && !this.state.pinned) this.setState({ explode: false }); }, this.reduce ? 0 : 1900);
+
+    if (this.root && 'IntersectionObserver' in window) {
+      this.io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (en.isIntersecting) this.setState({ active: en.target.id }); });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      ['demo', 'servicios', 'proyectos', 'proceso', 'consulta'].forEach((id) => {
+        const el = this.root.querySelector('#' + id);
+        if (el) this.io.observe(el);
+      });
+    }
+    this.t0 = performance.now();
+    if (!this.reduce) this.raf = requestAnimationFrame(this.tick);
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    clearTimeout(this.loadT); clearTimeout(this.swT); clearTimeout(this.cpT); clearTimeout(this.advT);
+    window.removeEventListener('scroll', this.scrollH);
+    if (this.io) this.io.disconnect();
+    if (this.stage) {
+      this.stage.removeEventListener('pointermove', this.sMove);
+      this.stage.removeEventListener('pointerenter', this.sEnter);
+      this.stage.removeEventListener('pointerleave', this.sLeave);
+    }
+    if (this.final) {
+      this.final.removeEventListener('pointermove', this.fMove);
+      this.final.removeEventListener('pointerleave', this.fLeave);
+    }
+  }
+
+  pickCat(id) {
+    if (id === this.state.cat) return;
+    if (this.reduce) { this.setState({ cat: id }); return; }
+    this.setState({ swap: true });
+    clearTimeout(this.swT);
+    this.swT = setTimeout(() => this.setState({ cat: id, swap: false }), 170);
+  }
+
+  renderVals() {
+    const st = this.state;
+    const links = [['#demo', 'Demo', 'demo'], ['#servicios', 'Servicios', 'servicios'], ['#proyectos', 'Proyectos', 'proyectos'], ['#proceso', 'Proceso', 'proceso'], ['#consulta', 'Consulta', 'consulta']];
+    const navLinks = links.map((l) => ({ href: l[0], label: l[1], cls: st.active === l[2] ? 'act' : '' }));
+
+    const cats = this.cats.map((c) => ({ label: c.label, cls: c.id === st.cat ? 'on' : '', pressed: c.id === st.cat ? 'true' : 'false', pick: () => this.pickCat(c.id) }));
+    const d = this.cats.find((c) => c.id === st.cat) || this.cats[0];
+
+    const svcs = this.svcs.map((s) => ({ name: s.name, cls: s.id === st.svc ? 'on' : '', pressed: s.id === st.svc ? 'true' : 'false', pick: () => this.setState({ svc: s.id }) }));
+    const svc = this.svcs.find((s) => s.id === st.svc) || this.svcs[0];
+
+    const fl = [['todos', 'Todos'], ['sitio', 'Sitios'], ['tienda', 'Tiendas'], ['landing', 'Landings']];
+    const filters = fl.map((f) => ({ label: f[1], cls: f[0] === st.filter ? 'on' : '', pressed: f[0] === st.filter ? 'true' : 'false', pick: () => this.setState({ filter: f[0] }) }));
+    const projects = this.projects
+      .filter((p) => st.filter === 'todos' || p.f === st.filter)
+      .map((p) => ({ name: p.name, kind: p.kind, cta: p.cta, head: p.head, desc: p.desc, aria: p.name + ', proyecto conceptual: ' + p.desc, cls: 'pc-' + p.id + ' ' + (st.filter === 'todos' ? p.size : '') }));
+
+    const steps = this.steps.map((s, i) => ({ n: s.n, title: s.title, text: s.text, cls: i === st.step ? 'on' : '', pressed: i === st.step ? 'true' : 'false', pick: () => this.setState({ step: i }) }));
+
+    const cmpOpts = [['gen', 'Plantilla genérica'], ['est', 'Diseñada con estrategia']].map((o) => ({ label: o[1], cls: o[0] === st.cmp ? 'on' : '', pressed: o[0] === st.cmp ? 'true' : 'false', pick: () => this.setState({ cmp: o[0] }) }));
+
+    const cs = st.cStep;
+    const ask = cs < 4;
+    const q = this.qs[Math.min(cs, 3)];
+    const cur = st.ans[q.key];
+    const c = {
+      ask: ask,
+      done: !ask,
+      key: q.key,
+      q: q.q,
+      opts: q.opts.map((label) => ({
+        label: label,
+        cls: cur === label ? 'on' : '',
+        pressed: cur === label ? 'true' : 'false',
+        pick: () => {
+          const ans = Object.assign({}, this.state.ans, { [q.key]: label });
+          this.setState({ ans: ans });
+          clearTimeout(this.advT);
+          this.advT = setTimeout(() => this.setState({ cStep: Math.min(4, this.state.cStep + 1) }), this.reduce ? 0 : 260);
+        }
+      })),
+      backDisabled: cs === 0,
+      nextDisabled: !cur && !q.optional,
+      nextLabel: q.optional && !cur ? 'Saltar' : 'Siguiente'
+    };
+    const segs = [0, 1, 2, 3].map((i) => ({ cls: i < cs || (i === cs && cur) || cs >= 4 ? 'on' : '' }));
+    const summary = this.qs.map((qq, i) => ({ q: qq.short, a: st.ans[qq.key] || 'Sin indicar', edit: () => this.setState({ cStep: i }) }));
+
+    return {
+      setRoot: this.setRoot, setStage: this.setStage, setTilt: this.setTilt, setProg: this.setProg,
+      setBg1: this.setBg1, setBg2: this.setBg2, setFinal: this.setFinal, setX: this.setX,
+      hdCls: (st.scrolled ? 'on ' : '') + (st.navOpen ? 'open' : ''),
+      navLinks: navLinks, navOpenStr: st.navOpen ? 'true' : 'false', toggleNav: this.toggleNav, closeNav: this.closeNav,
+      isoCls: st.explode ? 'ex' : '',
+      pinToggle: this.pinToggle, pinStr: st.pinned ? 'true' : 'false', pinLabel: st.pinned ? 'Armar de nuevo' : 'Ver por capas',
+      cats: cats, d: d, swapCls: st.swap ? 'sw' : '',
+      svcs: svcs, svc: svc,
+      filters: filters, projects: projects,
+      steps: steps, step: st.step, stepN: st.step + 1, nextStep: this.nextStep, nextStepLabel: st.step === 3 ? 'Volver al inicio' : 'Siguiente etapa',
+      cmpOpts: cmpOpts, cmp: st.cmp,
+      c: c, segs: segs, cLabel: ask ? 'Paso ' + (cs + 1) + ' de 4' : 'Resumen',
+      cBack: this.cBack, cNext: this.cNext,
+      summary: summary,
+      waHref: 'https://wa.me/?text=' + encodeURIComponent(this.summaryText()),
+      copySum: this.copySum, copyLabel: st.copied ? 'Copiado' : 'Copiar resumen'
+    };
+  }
+}
+</script>
+</body>
+</html>
