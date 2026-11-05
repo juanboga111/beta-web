@@ -24,7 +24,7 @@ Sello de autoría para el footer de los sitios que diseña y desarrolla beta: «
 
 No necesita JavaScript, fuentes ni imágenes externas, y funciona con CSP estrictas (`style-src 'self'`, sin estilos en línea). En React, Astro, Vue u otro framework se pega el mismo marcado como componente; en JSX, `class` pasa a `className` y `focusable` se mantiene como atributo.
 
-**El destino ya está configurado:** `https://www.instagram.com/bydesarrollo/`. No hay que cargarlo en cada proyecto. Es el perfil sin los parámetros de rastreo del enlace compartido (`utm_source`, `rpxt`), que no cambian el destino. Cuando cambie el usuario de Instagram por el de la marca nueva, actualizar `href` en `firma-beta.html` (y en `site/assets/js/config.js`); `npm test` verifica que coincidan.
+**El destino ya está configurado:** `https://www.instagram.com/betadesarrollo/`. No hay que cargarlo en cada proyecto. Es el perfil sin los parámetros de rastreo del enlace compartido (`utm_source`, `rpxt`), que no cambian el destino. Si vuelve a cambiar el usuario de Instagram, actualizar `href` en `firma-beta.html` (y en `site/assets/js/config.js`); `npm test` verifica que coincidan.
 
 ## Variantes
 
