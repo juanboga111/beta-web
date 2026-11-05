@@ -12,10 +12,10 @@ const body = (a) => a.replace(/^<a [^>]*>/, '');
 test('la firma enlaza al Instagram de beta en pestaña nueva, con <a> semántico', () => {
   const [a] = anchors(snippet);
   assert.ok(a, 'hay un <a class="firma-beta">');
-  assert.match(a, /href="https:\/\/www\.instagram\.com\/bydesarrollo\/"/);
+  assert.match(a, /href="https:\/\/www\.instagram\.com\/betadesarrollo\/"/);
   assert.match(a, /target="_blank"/);
   assert.match(a, /rel="noopener noreferrer"/);
-  assert.equal(SITE.instagram, 'https://www.instagram.com/bydesarrollo/', 'mismo destino que config.js del sitio');
+  assert.equal(SITE.instagram, 'https://www.instagram.com/betadesarrollo/', 'mismo destino que config.js del sitio');
 });
 
 test('el nombre accesible incluye el texto visible y avisa la pestaña nueva', () => {
@@ -33,6 +33,6 @@ test('las copias de la demo son idénticas al fragmento (solo cambian los data-*
   assert.equal(demo.length, 5);
   for (const a of demo) {
     assert.equal(body(a), body(anchors(snippet)[0]));
-    assert.match(a, /^<a class="firma-beta"( data-(tema|tamano|alinear)="[a-z]+")* href="https:\/\/www\.instagram\.com\/bydesarrollo\/" target="_blank" rel="noopener noreferrer">/);
+    assert.match(a, /^<a class="firma-beta"( data-(tema|tamano|alinear)="[a-z]+")* href="https:\/\/www\.instagram\.com\/betadesarrollo\/" target="_blank" rel="noopener noreferrer">/);
   }
 });

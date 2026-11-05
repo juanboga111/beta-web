@@ -404,7 +404,7 @@ Ninguno de estos datos se inventó: en el diseño figuran como marcadores entre 
 - [x] Número de WhatsApp de beta: 343 428-6906 (`5493434286906`, recibe la consulta) y 343 466-1332. Cargados en `site/assets/js/config.js`.
 - [x] Correo electrónico comercial: betadesarrolloweb@gmail.com.
 - [ ] Rangos reales de presupuesto para el paso 4 de la consulta (\[RANGO 1\], \[RANGO 2\], \[RANGO 3\]), o decidir quitar ese paso.
-- [x] Perfiles sociales: Instagram (https://www.instagram.com/bydesarrollo/), en el footer como "Instagram". El usuario va a cambiar al de la marca nueva.
+- [x] Perfiles sociales: Instagram (https://www.instagram.com/betadesarrollo/), en el footer como "Instagram" (usuario @betadesarrollo, antes @bydesarrollo).
 - [ ] Confirmar que el cliente habla directamente con quienes diseñan y programan (beneficio "Comunicación directa").
 - [ ] Confirmar que beta ofrece consultoría y estrategia digital (sexto servicio).
 - [ ] Portfolio real y futuros casos de éxito, con autorización de cada cliente. En curso: Bogado Servicios Integrales (publicado) y Cimbra Constructora (en desarrollo) ya están en el portfolio; faltan sus capturas.

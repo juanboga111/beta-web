@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const DIR = new URL('../../componentes/firma-beta/', import.meta.url);
 const ORIGIN = 'https://cliente.test/';
-const IG = 'https://www.instagram.com/bydesarrollo/';
+const IG = 'https://www.instagram.com/betadesarrollo/';
 const CSP = "default-src 'self'; style-src 'self'; img-src 'self' data:; script-src 'none'; object-src 'none'; base-uri 'self'";
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css' };
 const SHOTS = process.env.SHOTS;

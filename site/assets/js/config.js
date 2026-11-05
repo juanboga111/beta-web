@@ -10,7 +10,7 @@
 export const SITE = {
   whatsapp: ['5493434286906', '5493434661332'],
   email: 'betadesarrolloweb@gmail.com',
-  instagram: 'https://www.instagram.com/bydesarrollo/',
+  instagram: 'https://www.instagram.com/betadesarrollo/',
 };
 
 /** Número que recibe las consultas por WhatsApp. */
